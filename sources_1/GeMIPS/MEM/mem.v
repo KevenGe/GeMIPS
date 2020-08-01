@@ -99,16 +99,16 @@ end
 
 always@(*) begin
     if(rst) begin
-        stop_end <= 0'b0;
+        stop_end <= 1'b0;
     end
     else begin
         case (mem_op)
             `MEM_LB,
             `MEM_LW:  begin
-                stop_end <= 0'b1;
+                stop_end <= 1'b1;
             end
             default: begin
-                stop_end <= 0'b0;
+                stop_end <= 1'b0;
             end
         endcase
     end

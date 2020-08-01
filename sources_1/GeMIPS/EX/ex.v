@@ -117,7 +117,7 @@ wire[15:0] offset      = inst_i[15:0];
 wire[31:0] immu = {16'b0000_0000_0000_0000, immediate};   ///< 无符号扩展
 wire[31:0] imms = {{16{immediate[15]}}, immediate};        ///< 有符号扩展
 
-always@(inst_i) begin
+always@(*) begin
     if(rst) begin
         mem_op <= `MEM_NOP;
         mem_addr_o <= 32'b0000_0000;

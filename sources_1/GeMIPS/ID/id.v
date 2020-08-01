@@ -46,11 +46,7 @@ module id (
            /// 分支跳转
            output   reg         branch_flag_o,
            output   reg[31:0]   target_address_o,
-
-           output   reg         is_in_delaysolt_o,
            output   reg[31:0]   link_addr_o,
-           output   reg         next_inst_in_delaysolt_o,
-           input    wire        is_in_delaysolt_i,
 
            /// 存储相关
            output  wire[31:0]   inst_o,           ///< 用于传�?�指令给ex级计算地�?
@@ -91,9 +87,7 @@ always @(*) begin
     if(rst) begin
         branch_flag_o <= 1'b0;
         target_address_o <= 32'h00000000;
-        is_in_delaysolt_o <= 1'b0;
-        link_addr_o <= 32'h00000000;
-        next_inst_in_delaysolt_o <= 1'b0;
+        link_addr_o <= 32'h0000_0000;
     end
     else begin
         case (opcode)
@@ -102,10 +96,12 @@ always @(*) begin
                     `R_JR_FUNC: begin
                         branch_flag_o <= 1'b1;
                         target_address_o <= reg_1;
+                        link_addr_o <= 32'h0000_0000;
                     end
                     default : begin
                         branch_flag_o <= 1'b0;
                         target_address_o <= 32'h00000000;
+                        link_addr_o <= 32'h0000_0000;
                     end
                 endcase
             end
@@ -113,35 +109,42 @@ always @(*) begin
                 if( reg_1 == reg_2) begin
                     branch_flag_o <= 1'b1;
                     target_address_o <= pc + {{14{offset[15]}},{offset[15:0], 2'b00}} + 32'h000000004;
+                    link_addr_o <= 32'h0000_0000;
                 end
                 else begin
                     branch_flag_o <= 1'b0;
                     target_address_o <= 32'h00000000;
+                    link_addr_o <= 32'h0000_0000;
                 end
             end
             `I_BNE_OP: begin
                 if( reg_1 != reg_2) begin
                     branch_flag_o <= 1'b1;
                     target_address_o <= pc + {{14{offset[15]}},{offset[15:0], 2'b00}} + 32'h000000004;
+                    link_addr_o <= 32'h0000_0000;
                 end
                 else begin
                     branch_flag_o <= 1'b0;
                     target_address_o <= 32'h00000000;
+                    link_addr_o <= 32'h0000_0000;
                 end
             end
             `I_BGTZ_OP: begin
                 if( reg_1 > 0) begin
                     branch_flag_o <= 1'b1;
                     target_address_o <= pc + {{14{offset[15]}},{offset[15:0], 2'b00}};
+                    link_addr_o <= 32'h0000_0000;
                 end
                 else begin
                     branch_flag_o <= 1'b0;
                     target_address_o <= 32'h00000000;
+                    link_addr_o <= 32'h0000_0000;
                 end
             end
             `J_J_OP: begin
                 branch_flag_o <= 1'b1;
                 target_address_o <= {pc[31:28], {instr_index, 2'b00}};
+                link_addr_o <= 32'h0000_0000;
             end
             `J_JAL_OP: begin
                 branch_flag_o <= 1'b1;
@@ -151,6 +154,7 @@ always @(*) begin
             default : begin
                 branch_flag_o <= 1'b0;
                 target_address_o <= 32'h00000000;
+                link_addr_o <= 32'h0000_0000;
             end
         endcase
     end
@@ -423,7 +427,7 @@ end
 /// 1'b1    sa
 always @(*) begin
     if(rst) begin
-        uos <= 1'b0;
+        use_sa <= 1'b0;
     end
     else begin
         case (opcode)

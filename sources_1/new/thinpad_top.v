@@ -210,7 +210,7 @@ wire [31:0]  ram2_data_i;
 wire [31:0]  ram2_addr_o;
 wire [31:0]  ram2_data_o;
 wire         ram2_we_o;
-wire [31:0]  ram2_sel_o;
+wire [3:0]  ram2_sel_o;
 wire         ram2_ce_o;
 
 GeMIPS GeMIPS_1(
