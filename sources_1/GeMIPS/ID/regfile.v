@@ -31,9 +31,10 @@ reg[31:0] regs[31:0]; ///< 32个32位通用寄存器
 /**
  *  写入操作行为
  */
+integer i;
 always@(*) begin
     if(rst) begin
-        for (integer i = 0;i < 32;i = i+1 ) begin
+        for ( i= 0;i < 32;i = i+1 ) begin
             regs[i] <= 32'h00000000;
         end
     end
