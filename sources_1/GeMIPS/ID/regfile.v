@@ -28,23 +28,6 @@ module regfile (
 
 reg[31:0] regs[31:0]; ///< 32个32位通用寄存器
 
-
-// wire[31:0] t1;
-
-// assign t1 = regs[27];
-
-// ila_0 ila_0_1 (
-//           .clk(clk),
-//           .probe0(t1)
-//       );
-
-/**
- *  寄存器初始化行为，此行为只在仿真时有效，不会综合
- */
-// initial begin
-//     regs[0] = 32'h00000000;
-// end
-
 /**
  *  写入操作行为
  */
