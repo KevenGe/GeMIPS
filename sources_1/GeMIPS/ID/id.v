@@ -14,8 +14,8 @@ module id (
            input    wire        rst,            ///< 重置
            input    wire        clk,            ///< 时钟信号
 
-           input    wire[31:0]  pc,             ///< 指令的地址
-           input    wire[31:0]  inst,           ///< 指令编码
+           (*mark_debug = "true"*)input    wire[31:0]  pc,             ///< 指令的地址
+           (*mark_debug = "true"*)input    wire[31:0]  inst,           ///< 指令编码
 
            output   reg [4:0]   raddr_1,        ///< 读寄存器的地址
            output   reg         re_1,           ///< 读寄存器的使能
@@ -31,8 +31,8 @@ module id (
            output   reg [31:0]  reg_1,          ///< 源操作数1
            output   reg [31:0]  reg_2,          ///< 源操作数2
 
-           output   reg [4:0]   waddr,          ///< �?要写入的寄存器的地址
-           output   reg         we,             ///< �?要吸入的使能
+           (*mark_debug = "true"*)output   reg [4:0]   waddr,          ///< �?要写入的寄存器的地址
+           (*mark_debug = "true"*)output   reg         we,             ///< �?要吸入的使能
 
            /// 数据前推
            input    wire        ex_we_i,        ///< 执行�? 写使�?
@@ -52,12 +52,12 @@ module id (
            output  wire[31:0]   inst_o,           ///< 用于传�?�指令给ex级计算地�?
 
            /// 暂停信号
-           output   reg         is_stop
+           (*mark_debug = "true"*)output   reg         is_stop
        );
 
 assign inst_o = inst;
 
-wire[5:0] opcode       = inst[31:26];
+(*mark_debug = "true"*)wire[5:0] opcode       = inst[31:26];
 wire[4:0] rs           = inst[25:21];
 wire[4:0] rt           = inst[20:16];
 wire[15:0] immediate   = inst[15:0];
@@ -108,7 +108,7 @@ always @(*) begin
             `I_BEQ_OP: begin
                 if( reg_1 == reg_2) begin
                     branch_flag_o <= 1'b1;
-                    target_address_o <= pc + {{14{offset[15]}},{offset[15:0], 2'b00}} + 32'h000000004;
+                    target_address_o <= pc + {{14{offset[15]}},{offset[15:0], 2'b00}} + 32'h0000_0004;
                     link_addr_o <= 32'h0000_0000;
                 end
                 else begin
@@ -120,7 +120,7 @@ always @(*) begin
             `I_BNE_OP: begin
                 if( reg_1 != reg_2) begin
                     branch_flag_o <= 1'b1;
-                    target_address_o <= pc + {{14{offset[15]}},{offset[15:0], 2'b00}} + 32'h000000004;
+                    target_address_o <= pc + {{14{offset[15]}},{offset[15:0], 2'b00}} + 32'h0000_0004;
                     link_addr_o <= 32'h0000_0000;
                 end
                 else begin
@@ -186,7 +186,7 @@ end
  *  确定是否写入寄存器以及写入的地址
  */
 always @(*) begin
-    if(rst) begin
+    if(rst || inst == 32'h0000_0000) begin
         waddr <= 5'b00000;
         we <= 1'b0;
     end
@@ -303,7 +303,7 @@ end
  * 确定相关操作数的地址
  */
 always @(*) begin
-    if(rst) begin
+    if(rst || inst == 32'h0000_0000) begin
         raddr_1 <= 5'b00000;
         re_1 <= 1'b0;
         raddr_2 <= 5'b00000;

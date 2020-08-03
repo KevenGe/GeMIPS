@@ -15,7 +15,7 @@ module thinpad_top(
 
            //BaseRAM信号
            inout wire[31:0] base_ram_data,  //BaseRAM数据，低8位与CPLD串口控制器共享
-           output wire[19:0] base_ram_addr, //BaseRAM地址
+           (*mark_debug = "true"*)output wire[19:0] base_ram_addr, //BaseRAM地址
            output wire[3:0] base_ram_be_n,  //BaseRAM字节使能，低有效。如果不使用字节使能，请保持为0
            output wire base_ram_ce_n,       //BaseRAM片选，低有效
            output wire base_ram_oe_n,       //BaseRAM读使能，低有效

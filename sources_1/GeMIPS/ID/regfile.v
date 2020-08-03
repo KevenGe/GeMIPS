@@ -12,27 +12,30 @@ module regfile (
            input    wire        rst,    ///< 重置
            input    wire        clk,    ///< 时钟信号
 
-           input    wire[4:0]   waddr,  ///< 写地址
-           input    wire[31:0]  wdata,  ///< 写数据
-           input    wire        we,     ///< 写使能
+           (*mark_debug = "true"*)input    wire[4:0]   waddr,  ///< 写地址
+           (*mark_debug = "true"*)input    wire[31:0]  wdata,  ///< 写数据
+           (*mark_debug = "true"*)input    wire        we,     ///< 写使能
 
-           input    wire[4:0]   raddr_1,///< 读地址
-           input    wire        re_1,   ///< 读使能
-           output   reg [31:0]  rdata_1,///< 读数据
+           (*mark_debug = "true"*)input    wire[4:0]   raddr_1,///< 读地址
+           (*mark_debug = "true"*)input    wire        re_1,   ///< 读使能
+           (*mark_debug = "true"*)output   reg [31:0]  rdata_1,///< 读数据
 
-           input    wire[4:0]   raddr_2,///< 读地址
-           input    wire        re_2,   ///< 读使能
-           output   reg [31:0]  rdata_2 ///< 读数据
+           (*mark_debug = "true"*)input    wire[4:0]   raddr_2,///< 读地址
+           (*mark_debug = "true"*)input    wire        re_2,   ///< 读使能
+           (*mark_debug = "true"*)output   reg [31:0]  rdata_2 ///< 读数据
        );
 
 
-reg[31:0] regs[31:0]; ///< 32个32位通用寄存器
+reg[31:0] regs[0:31]; ///< 32个32位通用寄存器
+
+(*mark_debug = "true"*)wire[31:0] debug_regs_26 = regs[26];
+(*mark_debug = "true"*)wire[31:0] debug_regs_27 = regs[27];
 
 /**
  *  写入操作行为
  */
 integer i;
-always@(*) begin
+always@(negedge clk) begin
     if(rst) begin
         for ( i= 0;i < 32;i = i+1 ) begin
             regs[i] <= 32'h00000000;
@@ -42,6 +45,16 @@ always@(*) begin
         if(we == 1'b1) begin
             if(waddr != 5'b00000) begin
                 regs[waddr] <= wdata;
+            end
+            else begin
+                for ( i= 0;i < 32;i = i+1 ) begin
+                    regs[i] <= regs[i];
+                end
+            end
+        end
+        else begin
+            for ( i= 0;i < 32;i = i+1 ) begin
+                regs[i] <= regs[i];
             end
         end
     end

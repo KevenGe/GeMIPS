@@ -18,12 +18,12 @@ module mem (
            input        wire[4:0]   waddr_i,    ///< 从EX级来的写地址
            input        wire[31:0]  wdata_i,    ///< 从EX级来的写数据
 
-           output       reg         we_o,       ///< 到WB级的写使能信号
-           output       reg[4:0]    waddr_o,    ///< 到WB级的写地址
-           output       reg[31:0]   wdata_o,    ///< 到WB级的写数据
+           (*mark_debug = "true"*)output       reg         we_o,       ///< 到WB级的写使能信号
+           (*mark_debug = "true"*)output       reg[4:0]    waddr_o,    ///< 到WB级的写地址
+           (*mark_debug = "true"*)output       reg[31:0]   wdata_o,    ///< 到WB级的写数据
 
            /// 存储相关
-           input        wire[7:0]   mem_op,     ///< 存储操作
+           (*mark_debug = "true"*)input        wire[7:0]   mem_op,     ///< 存储操作
            input        wire[31:0]  mem_addr_i, ///< 存储需要进行操作的地址
            input        wire[31:0]  mem_data_i, ///< 存储需要进行操作的数据
 
@@ -35,7 +35,7 @@ module mem (
            output      reg          mem_ce_o,     ///< 使能信号
 
            /// 暂停信号
-           output      reg          stop_end
+           (*mark_debug = "true"*)output      reg          stop_end
        );
 
 always@(*) begin
