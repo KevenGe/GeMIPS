@@ -22,7 +22,7 @@ module RAM (
            /// 取指令
            input    wire[31:0]  rom_addr_i,     ///< 读取指令的地址
            input    wire        ce_i,           ///< 使能信号
-           output   wire [31:0] rom_data_o,     ///< 获取到的指令
+           output   reg [31:0] rom_data_o,     ///< 获取到的指令
 
            /// 为了方便，命名存储数据的线，前缀为ram2
            output   reg[31:0]   ram2_data_o,
@@ -114,61 +114,215 @@ async_transmitter #(.ClkFrequency(50000000),.Baud(9600)) //发送模块，9600�
  CPU 连接协同模块
 *****************************************************************************/
 
-///< 管理获取指令
-assign base_ram_data = 32'hzzzzzzzz;
-assign rom_data_o = base_ram_data;
+/// 处理读取或者写入的数据范围
+wire is_SerialStat = (ram2_addr_i ==  `SerialStat);
+wire is_SerialDate = (ram2_addr_i == `SerialDate);
+wire is_base_ram = is_SerialStat != 1'b1 && is_SerialDate != 1'b1 && (ram2_addr_i >= 32'h80000000) &&   (ram2_addr_i < 32'h80400000);
+wire is_ext_ram = is_SerialStat != 1'b1 && is_SerialDate != 1'b1 &&  (ram2_addr_i < 32'h80800000) && (ram2_addr_i >= 32'h80400000);
 
+reg[31:0] serial_o;
+wire[31:0] base_ram_o;
+wire[31:0] ext_ram_o;
+
+/// 处理串口
 always @(*) begin
-    base_ram_addr <= rom_addr_i[21:2];
-    base_ram_be_n <= 4'b0000;
-    base_ram_ce_n <= 1'b0;
-    base_ram_oe_n <= 1'b0;
-    base_ram_we_n <= 1'b1;
+    if(rst) begin
+        ext_uart_start <= 1'b0;
+        ext_uart_clear <= 1'b1;
+        serial_o <= 32'h0000_0000;
+        ext_uart_tx <= 8'h00;
+    end
+    else begin
+        if(is_SerialStat) begin                                     /// 获取串口状态
+            serial_o <= {{30{1'b0}}, {ext_uart_ready, !ext_uart_busy}};
+            ext_uart_clear <= 1'b0;
+            ext_uart_start <= 1'b0;
+            ext_uart_tx <= 8'h00;
+        end
+        else if(ram2_addr_i == `SerialDate) begin                   /// 获取（或发送）串口数据
+            if(ram2_we_i) begin                                     /// 读数据，即接收串口数据
+                serial_o <= {24'h000000, ext_uart_rx};
+                ext_uart_clear <= 1'b1;
+                ext_uart_start <= 1'b0;
+                ext_uart_tx <= 8'h00;
+            end
+            else begin                                              /// 写数据，即发送串口数据
+                ext_uart_tx <= ram2_data_i[7:0];
+                ext_uart_start <= 1'b1;
+                ext_uart_clear <= 1'b0;
+                serial_o <= 32'h0000_0000;
+            end
+        end
+        else begin
+            ext_uart_start <= 1'b0;
+            ext_uart_clear <= 1'b1;
+            serial_o <= 32'h0000_0000;
+            ext_uart_tx <= 8'h00;
+        end
+    end
 end
 
-///< 管理指令或者数据的存取
-wire [31:0] ram2_data_o_tmp;     ///< 主要用来临时存储串口数据
+/// BaseRam 管理指令或者数据的存取
+assign base_ram_data = is_base_ram ? ((ram2_we_i) ? 32'hzzzzzzzz : ram2_data_i) : 32'hzzzzzzzz;
+assign base_ram_o = base_ram_data;      /// 在读取模式下，读取到的BaseRam数据
+
+/// 处理BaseRam
+/// 在需要从BaseRam中获取或者写入数据的时候，往往认为CPU会暂停流水线（1个时钟周期）
+always @(*) begin
+    if(rst) begin
+        base_ram_addr <= 20'h0000_0;
+        base_ram_be_n <= 4'b1111;
+        base_ram_ce_n <= 1'b1;
+        base_ram_oe_n <= 1'b1;
+        base_ram_we_n <= 1'b1;
+        rom_data_o <= 32'h0000_0000;
+    end
+    else begin
+        if(is_base_ram) begin           /// 涉及到BaseRam的相关数据操作，默认暂停流水线
+            base_ram_addr <= ram2_addr_i[21:2];
+            base_ram_be_n <= ram2_sel_i;
+            base_ram_ce_n <= 1'b0;
+            base_ram_oe_n <= !ram2_we_i;
+            base_ram_we_n <= ram2_we_i;
+        end
+        else begin                      /// 不涉及到BaseRam的相关数据操作，继续取指令
+            base_ram_addr <= rom_addr_i[21:2];
+            base_ram_be_n <= 4'b0000;
+            base_ram_ce_n <= 1'b0;
+            base_ram_oe_n <= 1'b0;
+            base_ram_we_n <= 1'b1;
+        end
+        rom_data_o <= base_ram_o;
+    end
+end
+
+
+/// 处理ExtRam
 assign ext_ram_data = (ram2_we_i) ? 32'hzzzzzzzz : ram2_data_i;
-assign ram2_data_o_tmp = ext_ram_data;
+assign ext_ram_o = ext_ram_data;
 
 always @(*) begin
     if(rst) begin
-        ext_uart_tx <= 8'b0000_0000;
-    end
-    else if(ram2_addr_i == `SerialDate) begin
-        /// 获取（或发送）串口数据
-        if(ram2_we_i) begin
-            /// 读数据，即接收串口数据
-            ram2_data_o <= {24'h000000, ext_uart_rx};
-            ext_uart_clear <= 1'b1;
-            ext_uart_start <= 1'b0;
-        end
-        else begin
-            /// 写数据，即发送串口数据
-            ext_uart_tx <= ram2_data_i[7:0];
-            ext_uart_start <= 1'b1;
-            ext_uart_clear <= 1'b0;
-        end
-    end
-    else if (ram2_addr_i ==  `SerialStat) begin
-        /// 获取串口状态
-        ram2_data_o <= {{30{1'b0}}, {ext_uart_ready, !ext_uart_busy}};
-
-        ext_uart_clear <= 1'b0;
-        ext_uart_start <= 1'b0;
+        ext_ram_addr <= 20'h00000;
+        ext_ram_be_n <= 4'b1111;
+        ext_ram_ce_n <= 1'b1;
+        ext_ram_oe_n <= 1'b1;
+        ext_ram_we_n <= 1'b1;
     end
     else begin
-        ext_ram_addr <= ram2_addr_i[21:2];
-        ext_ram_be_n <= ram2_sel_i;
-        ext_ram_ce_n <= 1'b0;
-        ext_ram_oe_n <= !ram2_we_i;
-        ext_ram_we_n <= ram2_we_i;
-
-        ram2_data_o <= ram2_data_o_tmp;
-
-        ext_uart_clear <= 1'b0;
-        ext_uart_start <= 1'b0;
+        if(is_ext_ram) begin           /// 涉及到extRam的相关数据操作
+            ext_ram_addr <= ram2_addr_i[21:2];
+            ext_ram_be_n <= ram2_sel_i;
+            ext_ram_ce_n <= 1'b0;
+            ext_ram_oe_n <= !ram2_we_i;
+            ext_ram_we_n <= ram2_we_i;
+        end
+        else begin                      ///
+            ext_ram_addr <= 20'h00000;
+            ext_ram_be_n <= 4'b1111;
+            ext_ram_ce_n <= 1'b1;
+            ext_ram_oe_n <= 1'b1;
+            ext_ram_we_n <= 1'b1;
+        end
     end
 end
+
+
+/// 模块，确认输出的数据
+always @(*) begin
+    if(rst) begin
+        ram2_data_o <= 32'h0000_0000;
+    end
+    else begin
+        if(is_SerialStat ||is_SerialDate ) begin
+            ram2_data_o <= serial_o;
+        end
+        else if (is_base_ram) begin
+            ram2_data_o <= base_ram_o;
+        end
+        else if (is_ext_ram) begin
+            ram2_data_o <= ext_ram_o;
+        end
+        else begin
+            ram2_data_o <= 32'h0000_0000;
+        end
+    end
+end
+
+
+///< 管理获取指令
+// assign base_ram_data = 32'hzzzzzzzz;
+// assign rom_data_o = base_ram_data;
+
+// always @(*) begin
+
+//     if(rst) begin
+
+//     end
+//     else begin
+//         if(isData) begin
+
+//         end
+//         else begin
+//             base_ram_addr <= rom_addr_i[21:2];
+//             base_ram_be_n <= 4'b0000;
+//             base_ram_ce_n <= 1'b0;
+//             base_ram_oe_n <= 1'b0;
+//             base_ram_we_n <= 1'b1;
+//         end
+//     end
+// end
+
+
+// /// ExtRam 管理指令或者数据的存取
+// wire [31:0] ram2_data_o_tmp;
+// assign ext_ram_data = (ram2_we_i) ? 32'hzzzzzzzz : ram2_data_i;
+// assign ram2_data_o_tmp = ext_ram_data;
+
+// always @(*) begin
+//     if(rst) begin
+//         ext_uart_tx <= 8'b0000_0000;
+//     end
+//     else begin
+//         if(ram2_addr_i == `SerialDate) begin                /// 获取（或发送）串口数据
+//             if(ram2_we_i) begin                             /// 读数据，即接收串口数据
+//                 ram2_data_o <= {24'h000000, ext_uart_rx};
+//                 ext_uart_clear <= 1'b1;
+//                 ext_uart_start <= 1'b0;
+//             end
+//             else begin                                      /// 写数据，即发送串口数据
+//                 ext_uart_tx <= ram2_data_i[7:0];
+//                 ext_uart_start <= 1'b1;
+//                 ext_uart_clear <= 1'b0;
+//             end
+//         end
+//         else if (ram2_addr_i ==  `SerialStat) begin         /// 获取串口状态
+//             ram2_data_o <= {{30{1'b0}}, {ext_uart_ready, !ext_uart_busy}};
+
+//             ext_uart_clear <= 1'b0;
+//             ext_uart_start <= 1'b0;
+//         end
+//         else if (ram2_addr_i < 31'h80400000) begin          /// 访问的内存在BaseRam中
+//             base_ram_addr <= ram2_addr_i[21:2];
+//             base_ram_be_n <= ram2_sel_i;
+//             base_ram_ce_n <= 1'b0;
+//             base_ram_oe_n <= !ram2_we_i;
+//             base_ram_we_n <= ram2_we_i;
+
+//         end
+//         else begin                                          /// 访问的数据内存在ExtRam中
+//             ext_ram_addr <= ram2_addr_i[21:2];
+//             ext_ram_be_n <= ram2_sel_i;
+//             ext_ram_ce_n <= 1'b0;
+//             ext_ram_oe_n <= !ram2_we_i;
+//             ext_ram_we_n <= ram2_we_i;
+
+//             ram2_data_o <= ram2_data_o_tmp;
+
+//             ext_uart_clear <= 1'b0;
+//             ext_uart_start <= 1'b0;
+//         end
+//     end
+// end
 
 endmodule

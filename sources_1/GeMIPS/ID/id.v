@@ -173,6 +173,8 @@ always @(*) begin
     end
     else begin
         case (opcode)
+            `I_SB_OP,
+            `I_SW_OP,
             `I_LW_OP,
             `I_LB_OP: begin
                 is_stop <= 1'b1;

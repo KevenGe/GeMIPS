@@ -35,7 +35,8 @@ module mem (
            output      reg          mem_ce_o,     ///< 使能信号
 
            /// 暂停信号
-           output      reg          stop_end
+           output      reg          stop_end    ///< 结束暂停信号，一般针对于LB、LW使用
+           //    output      reg          stop_    ///< 只进行一次的暂停信号，一般针对于SB、SW使用
        );
 
 always@(*) begin
@@ -97,12 +98,15 @@ always@(*) begin
     end
 end
 
+/// 负责取消由于LB、LW而造成的流水线暂停现象
 always@(*) begin
     if(rst) begin
         stop_end <= 1'b0;
     end
     else begin
         case (mem_op)
+            `MEM_SB,
+            `MEM_SW,
             `MEM_LB,
             `MEM_LW:  begin
                 stop_end <= 1'b1;
