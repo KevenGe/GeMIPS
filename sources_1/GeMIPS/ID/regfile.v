@@ -28,8 +28,40 @@ module regfile (
 
 reg[31:0] regs[0:31]; ///< 32个32位通用寄存器
 
-wire[31:0] debug_regs_26 = regs[26];
-wire[31:0] debug_regs_27 = regs[27];
+/// DEBUG REGS
+(*mark_debug = "true"*)wire[31:0] debug_regs_zero_0 = regs[0];
+(*mark_debug = "true"*)wire[31:0] debug_regs_at_1 = regs[1];
+(*mark_debug = "true"*)wire[31:0] debug_regs_v0_2 = regs[2];
+(*mark_debug = "true"*)wire[31:0] debug_regs_v1_3 = regs[3];
+(*mark_debug = "true"*)wire[31:0] debug_regs_a0_4 = regs[4];
+(*mark_debug = "true"*)wire[31:0] debug_regs_a1_5 = regs[5];
+(*mark_debug = "true"*)wire[31:0] debug_regs_a2_6 = regs[6];
+(*mark_debug = "true"*)wire[31:0] debug_regs_a3_7 = regs[7];
+(*mark_debug = "true"*)wire[31:0] debug_regs_t0_8 = regs[8];
+(*mark_debug = "true"*)wire[31:0] debug_regs_t1_9 = regs[9];
+(*mark_debug = "true"*)wire[31:0] debug_regs_t2_10 = regs[10];
+(*mark_debug = "true"*)wire[31:0] debug_regs_t3_11 = regs[11];
+(*mark_debug = "true"*)wire[31:0] debug_regs_t4_12 = regs[12];
+(*mark_debug = "true"*)wire[31:0] debug_regs_t5_13 = regs[13];
+(*mark_debug = "true"*)wire[31:0] debug_regs_t6_14 = regs[14];
+(*mark_debug = "true"*)wire[31:0] debug_regs_t7_15 = regs[15];
+(*mark_debug = "true"*)wire[31:0] debug_regs_s0_16 = regs[16];
+(*mark_debug = "true"*)wire[31:0] debug_regs_s1_17 = regs[17];
+(*mark_debug = "true"*)wire[31:0] debug_regs_s2_18 = regs[18];
+(*mark_debug = "true"*)wire[31:0] debug_regs_s3_19 = regs[19];
+(*mark_debug = "true"*)wire[31:0] debug_regs_s4_20 = regs[20];
+(*mark_debug = "true"*)wire[31:0] debug_regs_s5_21 = regs[21];
+(*mark_debug = "true"*)wire[31:0] debug_regs_s6_22 = regs[22];
+(*mark_debug = "true"*)wire[31:0] debug_regs_s7_23 = regs[23];
+(*mark_debug = "true"*)wire[31:0] debug_regs_t8_24 = regs[24];
+(*mark_debug = "true"*)wire[31:0] debug_regs_t9_25 = regs[25];
+(*mark_debug = "true"*)wire[31:0] debug_regs_26 = regs[26];
+(*mark_debug = "true"*)wire[31:0] debug_regs_27 = regs[27];
+(*mark_debug = "true"*)wire[31:0] debug_regs_gp_28 = regs[28];
+(*mark_debug = "true"*)wire[31:0] debug_regs_sp_29 = regs[29];
+(*mark_debug = "true"*)wire[31:0] debug_regs_fp_30 = regs[30];
+(*mark_debug = "true"*)wire[31:0] debug_regs_ra_31 = regs[31];
+
 
 /**
  *  写入操作行为
