@@ -12,24 +12,24 @@ module regfile (
            input    wire        rst,    ///< 重置
            input    wire        clk,    ///< 时钟信号
 
-           (*mark_debug = "true"*)input    wire[4:0]   waddr,  ///< 写地址
-           (*mark_debug = "true"*)input    wire[31:0]  wdata,  ///< 写数据
-           (*mark_debug = "true"*)input    wire        we,     ///< 写使能
+           input    wire[4:0]   waddr,  ///< 写地址
+           input    wire[31:0]  wdata,  ///< 写数据
+           input    wire        we,     ///< 写使能
 
-           (*mark_debug = "true"*)input    wire[4:0]   raddr_1,///< 读地址
-           (*mark_debug = "true"*)input    wire        re_1,   ///< 读使能
-           (*mark_debug = "true"*)output   reg [31:0]  rdata_1,///< 读数据
+           input    wire[4:0]   raddr_1,///< 读地址
+           input    wire        re_1,   ///< 读使能
+           output   reg [31:0]  rdata_1,///< 读数据
 
-           (*mark_debug = "true"*)input    wire[4:0]   raddr_2,///< 读地址
-           (*mark_debug = "true"*)input    wire        re_2,   ///< 读使能
-           (*mark_debug = "true"*)output   reg [31:0]  rdata_2 ///< 读数据
+           input    wire[4:0]   raddr_2,///< 读地址
+           input    wire        re_2,   ///< 读使能
+           output   reg [31:0]  rdata_2 ///< 读数据
        );
 
 
 reg[31:0] regs[0:31]; ///< 32个32位通用寄存器
 
-(*mark_debug = "true"*)wire[31:0] debug_regs_26 = regs[26];
-(*mark_debug = "true"*)wire[31:0] debug_regs_27 = regs[27];
+wire[31:0] debug_regs_26 = regs[26];
+wire[31:0] debug_regs_27 = regs[27];
 
 /**
  *  写入操作行为

@@ -25,9 +25,9 @@ module RAM (
 
            /// 为了方便，命名存储数据的线，前缀为ram2
            output   reg[31:0]   ram2_data_o,
-           (*mark_debug = "true"*)input    wire[31:0]  ram2_addr_i,
-           (*mark_debug = "true"*)input    wire[31:0]  ram2_data_i,
-           (*mark_debug = "true"*)input    wire        ram2_we_i,              ///< 写使能，低有效
+           input    wire[31:0]  ram2_addr_i,
+           input    wire[31:0]  ram2_data_i,
+           input    wire        ram2_we_i,              ///< 写使能，低有效
            input    wire[3:0]   ram2_sel_i,
            input    wire        ram2_ce_i,
 
@@ -56,12 +56,12 @@ module RAM (
  串口通信模块
 *****************************************************************************/
 
-(*mark_debug = "true"*)wire [7:0]  ext_uart_rx;             ///< 接收到的数据线路
-(*mark_debug = "true"*)reg  [7:0]  ext_uart_buffer,         ///< 保存数据的位置
+wire [7:0]  ext_uart_rx;             ///< 接收到的数据线路
+reg  [7:0]  ext_uart_buffer,         ///< 保存数据的位置
      ext_uart_tx;                    ///< 发送数据的线路
-(*mark_debug = "true"*)wire        ext_uart_ready,          ///< 接收器收到数据完成之后，置为1
+wire        ext_uart_ready,          ///< 接收器收到数据完成之后，置为1
             ext_uart_busy;           ///< 发送器状态是否忙碌，1为忙碌，0为不忙碌
-(*mark_debug = "true"*)reg         ext_uart_start,          ///< 传递给发送器，为1时，代表可以发送，为0时，代表不发送
+reg         ext_uart_start,          ///< 传递给发送器，为1时，代表可以发送，为0时，代表不发送
             ext_uart_clear,          ///< 置1，在下次时钟有效的时候，会清楚接收器的标志位
             ext_uart_avai;           ///< 代表缓冲区是否可用，是否存有数据
 

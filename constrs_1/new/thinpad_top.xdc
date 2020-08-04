@@ -2289,177 +2289,33 @@ set_property ALLOW_COMBINATORIAL_LOOPS true [get_nets u_ila_0_ext_uart_busy]
 set_property ALLOW_COMBINATORIAL_LOOPS true [get_nets u_ila_0_ext_uart_clear]
 set_property ALLOW_COMBINATORIAL_LOOPS true [get_nets u_ila_0_ext_uart_ready]
 set_property ALLOW_COMBINATORIAL_LOOPS true [get_nets u_ila_0_ext_uart_start]
-create_debug_core u_ila_0 ila
-set_property ALL_PROBE_SAME_MU true [get_debug_cores u_ila_0]
-set_property ALL_PROBE_SAME_MU_CNT 4 [get_debug_cores u_ila_0]
-set_property C_ADV_TRIGGER true [get_debug_cores u_ila_0]
-set_property C_DATA_DEPTH 1024 [get_debug_cores u_ila_0]
-set_property C_EN_STRG_QUAL true [get_debug_cores u_ila_0]
-set_property C_INPUT_PIPE_STAGES 0 [get_debug_cores u_ila_0]
-set_property C_TRIGIN_EN false [get_debug_cores u_ila_0]
-set_property C_TRIGOUT_EN false [get_debug_cores u_ila_0]
-set_property port_width 1 [get_debug_ports u_ila_0/clk]
-connect_debug_port u_ila_0/clk [get_nets [list clock_gen/inst/clk_out1]]
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe0]
-set_property port_width 6 [get_debug_ports u_ila_0/probe0]
 connect_debug_port u_ila_0/probe0 [get_nets [list {GeMIPS_1/id_1/opcode[0]} {GeMIPS_1/id_1/opcode[1]} {GeMIPS_1/id_1/opcode[2]} {GeMIPS_1/id_1/opcode[3]} {GeMIPS_1/id_1/opcode[4]} {GeMIPS_1/id_1/opcode[5]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe1]
-set_property port_width 26 [get_debug_ports u_ila_0/probe1]
 connect_debug_port u_ila_0/probe1 [get_nets [list {GeMIPS_1/id_1/inst[0]} {GeMIPS_1/id_1/inst[1]} {GeMIPS_1/id_1/inst[2]} {GeMIPS_1/id_1/inst[3]} {GeMIPS_1/id_1/inst[4]} {GeMIPS_1/id_1/inst[5]} {GeMIPS_1/id_1/inst[6]} {GeMIPS_1/id_1/inst[7]} {GeMIPS_1/id_1/inst[8]} {GeMIPS_1/id_1/inst[9]} {GeMIPS_1/id_1/inst[10]} {GeMIPS_1/id_1/inst[11]} {GeMIPS_1/id_1/inst[12]} {GeMIPS_1/id_1/inst[13]} {GeMIPS_1/id_1/inst[14]} {GeMIPS_1/id_1/inst[15]} {GeMIPS_1/id_1/inst[16]} {GeMIPS_1/id_1/inst[17]} {GeMIPS_1/id_1/inst[18]} {GeMIPS_1/id_1/inst[19]} {GeMIPS_1/id_1/inst[20]} {GeMIPS_1/id_1/inst[21]} {GeMIPS_1/id_1/inst[22]} {GeMIPS_1/id_1/inst[23]} {GeMIPS_1/id_1/inst[24]} {GeMIPS_1/id_1/inst[25]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe2]
-set_property port_width 5 [get_debug_ports u_ila_0/probe2]
 connect_debug_port u_ila_0/probe2 [get_nets [list {GeMIPS_1/id_1/waddr[0]} {GeMIPS_1/id_1/waddr[1]} {GeMIPS_1/id_1/waddr[2]} {GeMIPS_1/id_1/waddr[3]} {GeMIPS_1/id_1/waddr[4]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe3]
-set_property port_width 32 [get_debug_ports u_ila_0/probe3]
 connect_debug_port u_ila_0/probe3 [get_nets [list {GeMIPS_1/id_1/pc[0]} {GeMIPS_1/id_1/pc[1]} {GeMIPS_1/id_1/pc[2]} {GeMIPS_1/id_1/pc[3]} {GeMIPS_1/id_1/pc[4]} {GeMIPS_1/id_1/pc[5]} {GeMIPS_1/id_1/pc[6]} {GeMIPS_1/id_1/pc[7]} {GeMIPS_1/id_1/pc[8]} {GeMIPS_1/id_1/pc[9]} {GeMIPS_1/id_1/pc[10]} {GeMIPS_1/id_1/pc[11]} {GeMIPS_1/id_1/pc[12]} {GeMIPS_1/id_1/pc[13]} {GeMIPS_1/id_1/pc[14]} {GeMIPS_1/id_1/pc[15]} {GeMIPS_1/id_1/pc[16]} {GeMIPS_1/id_1/pc[17]} {GeMIPS_1/id_1/pc[18]} {GeMIPS_1/id_1/pc[19]} {GeMIPS_1/id_1/pc[20]} {GeMIPS_1/id_1/pc[21]} {GeMIPS_1/id_1/pc[22]} {GeMIPS_1/id_1/pc[23]} {GeMIPS_1/id_1/pc[24]} {GeMIPS_1/id_1/pc[25]} {GeMIPS_1/id_1/pc[26]} {GeMIPS_1/id_1/pc[27]} {GeMIPS_1/id_1/pc[28]} {GeMIPS_1/id_1/pc[29]} {GeMIPS_1/id_1/pc[30]} {GeMIPS_1/id_1/pc[31]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe4]
-set_property port_width 32 [get_debug_ports u_ila_0/probe4]
 connect_debug_port u_ila_0/probe4 [get_nets [list {GeMIPS_1/mem_1/wdata_o[0]} {GeMIPS_1/mem_1/wdata_o[1]} {GeMIPS_1/mem_1/wdata_o[2]} {GeMIPS_1/mem_1/wdata_o[3]} {GeMIPS_1/mem_1/wdata_o[4]} {GeMIPS_1/mem_1/wdata_o[5]} {GeMIPS_1/mem_1/wdata_o[6]} {GeMIPS_1/mem_1/wdata_o[7]} {GeMIPS_1/mem_1/wdata_o[8]} {GeMIPS_1/mem_1/wdata_o[9]} {GeMIPS_1/mem_1/wdata_o[10]} {GeMIPS_1/mem_1/wdata_o[11]} {GeMIPS_1/mem_1/wdata_o[12]} {GeMIPS_1/mem_1/wdata_o[13]} {GeMIPS_1/mem_1/wdata_o[14]} {GeMIPS_1/mem_1/wdata_o[15]} {GeMIPS_1/mem_1/wdata_o[16]} {GeMIPS_1/mem_1/wdata_o[17]} {GeMIPS_1/mem_1/wdata_o[18]} {GeMIPS_1/mem_1/wdata_o[19]} {GeMIPS_1/mem_1/wdata_o[20]} {GeMIPS_1/mem_1/wdata_o[21]} {GeMIPS_1/mem_1/wdata_o[22]} {GeMIPS_1/mem_1/wdata_o[23]} {GeMIPS_1/mem_1/wdata_o[24]} {GeMIPS_1/mem_1/wdata_o[25]} {GeMIPS_1/mem_1/wdata_o[26]} {GeMIPS_1/mem_1/wdata_o[27]} {GeMIPS_1/mem_1/wdata_o[28]} {GeMIPS_1/mem_1/wdata_o[29]} {GeMIPS_1/mem_1/wdata_o[30]} {GeMIPS_1/mem_1/wdata_o[31]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe5]
-set_property port_width 5 [get_debug_ports u_ila_0/probe5]
-connect_debug_port u_ila_0/probe5 [get_nets [list {GeMIPS_1/regfile_1/raddr_1[0]} {GeMIPS_1/regfile_1/raddr_1[1]} {GeMIPS_1/regfile_1/raddr_1[2]} {GeMIPS_1/regfile_1/raddr_1[3]} {GeMIPS_1/regfile_1/raddr_1[4]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe6]
-set_property port_width 32 [get_debug_ports u_ila_0/probe6]
-connect_debug_port u_ila_0/probe6 [get_nets [list {GeMIPS_1/regfile_1/rdata_2[0]} {GeMIPS_1/regfile_1/rdata_2[1]} {GeMIPS_1/regfile_1/rdata_2[2]} {GeMIPS_1/regfile_1/rdata_2[3]} {GeMIPS_1/regfile_1/rdata_2[4]} {GeMIPS_1/regfile_1/rdata_2[5]} {GeMIPS_1/regfile_1/rdata_2[6]} {GeMIPS_1/regfile_1/rdata_2[7]} {GeMIPS_1/regfile_1/rdata_2[8]} {GeMIPS_1/regfile_1/rdata_2[9]} {GeMIPS_1/regfile_1/rdata_2[10]} {GeMIPS_1/regfile_1/rdata_2[11]} {GeMIPS_1/regfile_1/rdata_2[12]} {GeMIPS_1/regfile_1/rdata_2[13]} {GeMIPS_1/regfile_1/rdata_2[14]} {GeMIPS_1/regfile_1/rdata_2[15]} {GeMIPS_1/regfile_1/rdata_2[16]} {GeMIPS_1/regfile_1/rdata_2[17]} {GeMIPS_1/regfile_1/rdata_2[18]} {GeMIPS_1/regfile_1/rdata_2[19]} {GeMIPS_1/regfile_1/rdata_2[20]} {GeMIPS_1/regfile_1/rdata_2[21]} {GeMIPS_1/regfile_1/rdata_2[22]} {GeMIPS_1/regfile_1/rdata_2[23]} {GeMIPS_1/regfile_1/rdata_2[24]} {GeMIPS_1/regfile_1/rdata_2[25]} {GeMIPS_1/regfile_1/rdata_2[26]} {GeMIPS_1/regfile_1/rdata_2[27]} {GeMIPS_1/regfile_1/rdata_2[28]} {GeMIPS_1/regfile_1/rdata_2[29]} {GeMIPS_1/regfile_1/rdata_2[30]} {GeMIPS_1/regfile_1/rdata_2[31]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe7]
-set_property port_width 8 [get_debug_ports u_ila_0/probe7]
 connect_debug_port u_ila_0/probe7 [get_nets [list {GeMIPS_1/mem_1/p_0_in[0]} {GeMIPS_1/mem_1/p_0_in[1]} {GeMIPS_1/mem_1/p_0_in[2]} {GeMIPS_1/mem_1/p_0_in[3]} {GeMIPS_1/mem_1/p_0_in[4]} {GeMIPS_1/mem_1/p_0_in[5]} {GeMIPS_1/mem_1/p_0_in[6]} {GeMIPS_1/mem_1/p_0_in[7]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe8]
-set_property port_width 32 [get_debug_ports u_ila_0/probe8]
 connect_debug_port u_ila_0/probe8 [get_nets [list {GeMIPS_1/regfile_1/debug_regs_27[0]} {GeMIPS_1/regfile_1/debug_regs_27[1]} {GeMIPS_1/regfile_1/debug_regs_27[2]} {GeMIPS_1/regfile_1/debug_regs_27[3]} {GeMIPS_1/regfile_1/debug_regs_27[4]} {GeMIPS_1/regfile_1/debug_regs_27[5]} {GeMIPS_1/regfile_1/debug_regs_27[6]} {GeMIPS_1/regfile_1/debug_regs_27[7]} {GeMIPS_1/regfile_1/debug_regs_27[8]} {GeMIPS_1/regfile_1/debug_regs_27[9]} {GeMIPS_1/regfile_1/debug_regs_27[10]} {GeMIPS_1/regfile_1/debug_regs_27[11]} {GeMIPS_1/regfile_1/debug_regs_27[12]} {GeMIPS_1/regfile_1/debug_regs_27[13]} {GeMIPS_1/regfile_1/debug_regs_27[14]} {GeMIPS_1/regfile_1/debug_regs_27[15]} {GeMIPS_1/regfile_1/debug_regs_27[16]} {GeMIPS_1/regfile_1/debug_regs_27[17]} {GeMIPS_1/regfile_1/debug_regs_27[18]} {GeMIPS_1/regfile_1/debug_regs_27[19]} {GeMIPS_1/regfile_1/debug_regs_27[20]} {GeMIPS_1/regfile_1/debug_regs_27[21]} {GeMIPS_1/regfile_1/debug_regs_27[22]} {GeMIPS_1/regfile_1/debug_regs_27[23]} {GeMIPS_1/regfile_1/debug_regs_27[24]} {GeMIPS_1/regfile_1/debug_regs_27[25]} {GeMIPS_1/regfile_1/debug_regs_27[26]} {GeMIPS_1/regfile_1/debug_regs_27[27]} {GeMIPS_1/regfile_1/debug_regs_27[28]} {GeMIPS_1/regfile_1/debug_regs_27[29]} {GeMIPS_1/regfile_1/debug_regs_27[30]} {GeMIPS_1/regfile_1/debug_regs_27[31]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe9]
-set_property port_width 32 [get_debug_ports u_ila_0/probe9]
 connect_debug_port u_ila_0/probe9 [get_nets [list {GeMIPS_1/regfile_1/debug_regs_26[0]} {GeMIPS_1/regfile_1/debug_regs_26[1]} {GeMIPS_1/regfile_1/debug_regs_26[2]} {GeMIPS_1/regfile_1/debug_regs_26[3]} {GeMIPS_1/regfile_1/debug_regs_26[4]} {GeMIPS_1/regfile_1/debug_regs_26[5]} {GeMIPS_1/regfile_1/debug_regs_26[6]} {GeMIPS_1/regfile_1/debug_regs_26[7]} {GeMIPS_1/regfile_1/debug_regs_26[8]} {GeMIPS_1/regfile_1/debug_regs_26[9]} {GeMIPS_1/regfile_1/debug_regs_26[10]} {GeMIPS_1/regfile_1/debug_regs_26[11]} {GeMIPS_1/regfile_1/debug_regs_26[12]} {GeMIPS_1/regfile_1/debug_regs_26[13]} {GeMIPS_1/regfile_1/debug_regs_26[14]} {GeMIPS_1/regfile_1/debug_regs_26[15]} {GeMIPS_1/regfile_1/debug_regs_26[16]} {GeMIPS_1/regfile_1/debug_regs_26[17]} {GeMIPS_1/regfile_1/debug_regs_26[18]} {GeMIPS_1/regfile_1/debug_regs_26[19]} {GeMIPS_1/regfile_1/debug_regs_26[20]} {GeMIPS_1/regfile_1/debug_regs_26[21]} {GeMIPS_1/regfile_1/debug_regs_26[22]} {GeMIPS_1/regfile_1/debug_regs_26[23]} {GeMIPS_1/regfile_1/debug_regs_26[24]} {GeMIPS_1/regfile_1/debug_regs_26[25]} {GeMIPS_1/regfile_1/debug_regs_26[26]} {GeMIPS_1/regfile_1/debug_regs_26[27]} {GeMIPS_1/regfile_1/debug_regs_26[28]} {GeMIPS_1/regfile_1/debug_regs_26[29]} {GeMIPS_1/regfile_1/debug_regs_26[30]} {GeMIPS_1/regfile_1/debug_regs_26[31]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe10]
-set_property port_width 5 [get_debug_ports u_ila_0/probe10]
 connect_debug_port u_ila_0/probe10 [get_nets [list {GeMIPS_1/mem_1/waddr_o[0]} {GeMIPS_1/mem_1/waddr_o[1]} {GeMIPS_1/mem_1/waddr_o[2]} {GeMIPS_1/mem_1/waddr_o[3]} {GeMIPS_1/mem_1/waddr_o[4]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe11]
-set_property port_width 5 [get_debug_ports u_ila_0/probe11]
-connect_debug_port u_ila_0/probe11 [get_nets [list {GeMIPS_1/regfile_1/raddr_2[0]} {GeMIPS_1/regfile_1/raddr_2[1]} {GeMIPS_1/regfile_1/raddr_2[2]} {GeMIPS_1/regfile_1/raddr_2[3]} {GeMIPS_1/regfile_1/raddr_2[4]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe12]
-set_property port_width 32 [get_debug_ports u_ila_0/probe12]
-connect_debug_port u_ila_0/probe12 [get_nets [list {GeMIPS_1/regfile_1/rdata_1[0]} {GeMIPS_1/regfile_1/rdata_1[1]} {GeMIPS_1/regfile_1/rdata_1[2]} {GeMIPS_1/regfile_1/rdata_1[3]} {GeMIPS_1/regfile_1/rdata_1[4]} {GeMIPS_1/regfile_1/rdata_1[5]} {GeMIPS_1/regfile_1/rdata_1[6]} {GeMIPS_1/regfile_1/rdata_1[7]} {GeMIPS_1/regfile_1/rdata_1[8]} {GeMIPS_1/regfile_1/rdata_1[9]} {GeMIPS_1/regfile_1/rdata_1[10]} {GeMIPS_1/regfile_1/rdata_1[11]} {GeMIPS_1/regfile_1/rdata_1[12]} {GeMIPS_1/regfile_1/rdata_1[13]} {GeMIPS_1/regfile_1/rdata_1[14]} {GeMIPS_1/regfile_1/rdata_1[15]} {GeMIPS_1/regfile_1/rdata_1[16]} {GeMIPS_1/regfile_1/rdata_1[17]} {GeMIPS_1/regfile_1/rdata_1[18]} {GeMIPS_1/regfile_1/rdata_1[19]} {GeMIPS_1/regfile_1/rdata_1[20]} {GeMIPS_1/regfile_1/rdata_1[21]} {GeMIPS_1/regfile_1/rdata_1[22]} {GeMIPS_1/regfile_1/rdata_1[23]} {GeMIPS_1/regfile_1/rdata_1[24]} {GeMIPS_1/regfile_1/rdata_1[25]} {GeMIPS_1/regfile_1/rdata_1[26]} {GeMIPS_1/regfile_1/rdata_1[27]} {GeMIPS_1/regfile_1/rdata_1[28]} {GeMIPS_1/regfile_1/rdata_1[29]} {GeMIPS_1/regfile_1/rdata_1[30]} {GeMIPS_1/regfile_1/rdata_1[31]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe13]
-set_property port_width 5 [get_debug_ports u_ila_0/probe13]
-connect_debug_port u_ila_0/probe13 [get_nets [list {GeMIPS_1/regfile_1/waddr[0]} {GeMIPS_1/regfile_1/waddr[1]} {GeMIPS_1/regfile_1/waddr[2]} {GeMIPS_1/regfile_1/waddr[3]} {GeMIPS_1/regfile_1/waddr[4]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe14]
-set_property port_width 32 [get_debug_ports u_ila_0/probe14]
-connect_debug_port u_ila_0/probe14 [get_nets [list {GeMIPS_1/regfile_1/wdata[0]} {GeMIPS_1/regfile_1/wdata[1]} {GeMIPS_1/regfile_1/wdata[2]} {GeMIPS_1/regfile_1/wdata[3]} {GeMIPS_1/regfile_1/wdata[4]} {GeMIPS_1/regfile_1/wdata[5]} {GeMIPS_1/regfile_1/wdata[6]} {GeMIPS_1/regfile_1/wdata[7]} {GeMIPS_1/regfile_1/wdata[8]} {GeMIPS_1/regfile_1/wdata[9]} {GeMIPS_1/regfile_1/wdata[10]} {GeMIPS_1/regfile_1/wdata[11]} {GeMIPS_1/regfile_1/wdata[12]} {GeMIPS_1/regfile_1/wdata[13]} {GeMIPS_1/regfile_1/wdata[14]} {GeMIPS_1/regfile_1/wdata[15]} {GeMIPS_1/regfile_1/wdata[16]} {GeMIPS_1/regfile_1/wdata[17]} {GeMIPS_1/regfile_1/wdata[18]} {GeMIPS_1/regfile_1/wdata[19]} {GeMIPS_1/regfile_1/wdata[20]} {GeMIPS_1/regfile_1/wdata[21]} {GeMIPS_1/regfile_1/wdata[22]} {GeMIPS_1/regfile_1/wdata[23]} {GeMIPS_1/regfile_1/wdata[24]} {GeMIPS_1/regfile_1/wdata[25]} {GeMIPS_1/regfile_1/wdata[26]} {GeMIPS_1/regfile_1/wdata[27]} {GeMIPS_1/regfile_1/wdata[28]} {GeMIPS_1/regfile_1/wdata[29]} {GeMIPS_1/regfile_1/wdata[30]} {GeMIPS_1/regfile_1/wdata[31]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe15]
-set_property port_width 32 [get_debug_ports u_ila_0/probe15]
 connect_debug_port u_ila_0/probe15 [get_nets [list {RAM_1/ram2_data_i[0]} {RAM_1/ram2_data_i[1]} {RAM_1/ram2_data_i[2]} {RAM_1/ram2_data_i[3]} {RAM_1/ram2_data_i[4]} {RAM_1/ram2_data_i[5]} {RAM_1/ram2_data_i[6]} {RAM_1/ram2_data_i[7]} {RAM_1/ram2_data_i[8]} {RAM_1/ram2_data_i[9]} {RAM_1/ram2_data_i[10]} {RAM_1/ram2_data_i[11]} {RAM_1/ram2_data_i[12]} {RAM_1/ram2_data_i[13]} {RAM_1/ram2_data_i[14]} {RAM_1/ram2_data_i[15]} {RAM_1/ram2_data_i[16]} {RAM_1/ram2_data_i[17]} {RAM_1/ram2_data_i[18]} {RAM_1/ram2_data_i[19]} {RAM_1/ram2_data_i[20]} {RAM_1/ram2_data_i[21]} {RAM_1/ram2_data_i[22]} {RAM_1/ram2_data_i[23]} {RAM_1/ram2_data_i[24]} {RAM_1/ram2_data_i[25]} {RAM_1/ram2_data_i[26]} {RAM_1/ram2_data_i[27]} {RAM_1/ram2_data_i[28]} {RAM_1/ram2_data_i[29]} {RAM_1/ram2_data_i[30]} {RAM_1/ram2_data_i[31]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe16]
-set_property port_width 20 [get_debug_ports u_ila_0/probe16]
-connect_debug_port u_ila_0/probe16 [get_nets [list {base_ram_addr_OBUF[0]} {base_ram_addr_OBUF[1]} {base_ram_addr_OBUF[2]} {base_ram_addr_OBUF[3]} {base_ram_addr_OBUF[4]} {base_ram_addr_OBUF[5]} {base_ram_addr_OBUF[6]} {base_ram_addr_OBUF[7]} {base_ram_addr_OBUF[8]} {base_ram_addr_OBUF[9]} {base_ram_addr_OBUF[10]} {base_ram_addr_OBUF[11]} {base_ram_addr_OBUF[12]} {base_ram_addr_OBUF[13]} {base_ram_addr_OBUF[14]} {base_ram_addr_OBUF[15]} {base_ram_addr_OBUF[16]} {base_ram_addr_OBUF[17]} {base_ram_addr_OBUF[18]} {base_ram_addr_OBUF[19]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe17]
-set_property port_width 8 [get_debug_ports u_ila_0/probe17]
-connect_debug_port u_ila_0/probe17 [get_nets [list {RAM_1/ext_uart_tx[0]} {RAM_1/ext_uart_tx[1]} {RAM_1/ext_uart_tx[2]} {RAM_1/ext_uart_tx[3]} {RAM_1/ext_uart_tx[4]} {RAM_1/ext_uart_tx[5]} {RAM_1/ext_uart_tx[6]} {RAM_1/ext_uart_tx[7]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe18]
-set_property port_width 8 [get_debug_ports u_ila_0/probe18]
 connect_debug_port u_ila_0/probe18 [get_nets [list {RAM_1/ext_uart_buffer[0]} {RAM_1/ext_uart_buffer[1]} {RAM_1/ext_uart_buffer[2]} {RAM_1/ext_uart_buffer[3]} {RAM_1/ext_uart_buffer[4]} {RAM_1/ext_uart_buffer[5]} {RAM_1/ext_uart_buffer[6]} {RAM_1/ext_uart_buffer[7]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe19]
-set_property port_width 32 [get_debug_ports u_ila_0/probe19]
 connect_debug_port u_ila_0/probe19 [get_nets [list {RAM_1/ram2_addr_i[0]} {RAM_1/ram2_addr_i[1]} {RAM_1/ram2_addr_i[2]} {RAM_1/ram2_addr_i[3]} {RAM_1/ram2_addr_i[4]} {RAM_1/ram2_addr_i[5]} {RAM_1/ram2_addr_i[6]} {RAM_1/ram2_addr_i[7]} {RAM_1/ram2_addr_i[8]} {RAM_1/ram2_addr_i[9]} {RAM_1/ram2_addr_i[10]} {RAM_1/ram2_addr_i[11]} {RAM_1/ram2_addr_i[12]} {RAM_1/ram2_addr_i[13]} {RAM_1/ram2_addr_i[14]} {RAM_1/ram2_addr_i[15]} {RAM_1/ram2_addr_i[16]} {RAM_1/ram2_addr_i[17]} {RAM_1/ram2_addr_i[18]} {RAM_1/ram2_addr_i[19]} {RAM_1/ram2_addr_i[20]} {RAM_1/ram2_addr_i[21]} {RAM_1/ram2_addr_i[22]} {RAM_1/ram2_addr_i[23]} {RAM_1/ram2_addr_i[24]} {RAM_1/ram2_addr_i[25]} {RAM_1/ram2_addr_i[26]} {RAM_1/ram2_addr_i[27]} {RAM_1/ram2_addr_i[28]} {RAM_1/ram2_addr_i[29]} {RAM_1/ram2_addr_i[30]} {RAM_1/ram2_addr_i[31]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe20]
-set_property port_width 32 [get_debug_ports u_ila_0/probe20]
 connect_debug_port u_ila_0/probe20 [get_nets [list {RAM_1/ram2_data_o[0]} {RAM_1/ram2_data_o[1]} {RAM_1/ram2_data_o[2]} {RAM_1/ram2_data_o[3]} {RAM_1/ram2_data_o[4]} {RAM_1/ram2_data_o[5]} {RAM_1/ram2_data_o[6]} {RAM_1/ram2_data_o[7]} {RAM_1/ram2_data_o[8]} {RAM_1/ram2_data_o[9]} {RAM_1/ram2_data_o[10]} {RAM_1/ram2_data_o[11]} {RAM_1/ram2_data_o[12]} {RAM_1/ram2_data_o[13]} {RAM_1/ram2_data_o[14]} {RAM_1/ram2_data_o[15]} {RAM_1/ram2_data_o[16]} {RAM_1/ram2_data_o[17]} {RAM_1/ram2_data_o[18]} {RAM_1/ram2_data_o[19]} {RAM_1/ram2_data_o[20]} {RAM_1/ram2_data_o[21]} {RAM_1/ram2_data_o[22]} {RAM_1/ram2_data_o[23]} {RAM_1/ram2_data_o[24]} {RAM_1/ram2_data_o[25]} {RAM_1/ram2_data_o[26]} {RAM_1/ram2_data_o[27]} {RAM_1/ram2_data_o[28]} {RAM_1/ram2_data_o[29]} {RAM_1/ram2_data_o[30]} {RAM_1/ram2_data_o[31]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe21]
-set_property port_width 8 [get_debug_ports u_ila_0/probe21]
 connect_debug_port u_ila_0/probe21 [get_nets [list {RAM_1/ext_uart_rx[0]} {RAM_1/ext_uart_rx[1]} {RAM_1/ext_uart_rx[2]} {RAM_1/ext_uart_rx[3]} {RAM_1/ext_uart_rx[4]} {RAM_1/ext_uart_rx[5]} {RAM_1/ext_uart_rx[6]} {RAM_1/ext_uart_rx[7]}]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe22]
-set_property port_width 1 [get_debug_ports u_ila_0/probe22]
 connect_debug_port u_ila_0/probe22 [get_nets [list RAM_1/ext_uart_avai]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe23]
-set_property port_width 1 [get_debug_ports u_ila_0/probe23]
 connect_debug_port u_ila_0/probe23 [get_nets [list RAM_1/ext_uart_busy]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe24]
-set_property port_width 1 [get_debug_ports u_ila_0/probe24]
 connect_debug_port u_ila_0/probe24 [get_nets [list RAM_1/ext_uart_clear]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe25]
-set_property port_width 1 [get_debug_ports u_ila_0/probe25]
-connect_debug_port u_ila_0/probe25 [get_nets [list RAM_1/ext_uart_ready]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe26]
-set_property port_width 1 [get_debug_ports u_ila_0/probe26]
 connect_debug_port u_ila_0/probe26 [get_nets [list RAM_1/ext_uart_start]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe27]
-set_property port_width 1 [get_debug_ports u_ila_0/probe27]
 connect_debug_port u_ila_0/probe27 [get_nets [list GeMIPS_1/STOPS_1/id_stop]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe28]
-set_property port_width 1 [get_debug_ports u_ila_0/probe28]
 connect_debug_port u_ila_0/probe28 [get_nets [list GeMIPS_1/STOPS_1/if_stop]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe29]
-set_property port_width 1 [get_debug_ports u_ila_0/probe29]
 connect_debug_port u_ila_0/probe29 [get_nets [list GeMIPS_1/id_1/is_stop]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe30]
-set_property port_width 1 [get_debug_ports u_ila_0/probe30]
 connect_debug_port u_ila_0/probe30 [get_nets [list GeMIPS_1/STOPS_1/mem_stop_end]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe31]
-set_property port_width 1 [get_debug_ports u_ila_0/probe31]
 connect_debug_port u_ila_0/probe31 [get_nets [list RAM_1/ram2_we_i]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe32]
-set_property port_width 1 [get_debug_ports u_ila_0/probe32]
-connect_debug_port u_ila_0/probe32 [get_nets [list GeMIPS_1/regfile_1/re_1]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe33]
-set_property port_width 1 [get_debug_ports u_ila_0/probe33]
-connect_debug_port u_ila_0/probe33 [get_nets [list GeMIPS_1/regfile_1/re_2]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe34]
-set_property port_width 1 [get_debug_ports u_ila_0/probe34]
 connect_debug_port u_ila_0/probe34 [get_nets [list GeMIPS_1/mem_1/stop_end]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe35]
-set_property port_width 1 [get_debug_ports u_ila_0/probe35]
 connect_debug_port u_ila_0/probe35 [get_nets [list GeMIPS_1/pc_reg_1/stops_stop]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe36]
-set_property port_width 1 [get_debug_ports u_ila_0/probe36]
-connect_debug_port u_ila_0/probe36 [get_nets [list GeMIPS_1/regfile_1/we]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe37]
-set_property port_width 1 [get_debug_ports u_ila_0/probe37]
 connect_debug_port u_ila_0/probe37 [get_nets [list GeMIPS_1/id_1/we]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe38]
-set_property port_width 1 [get_debug_ports u_ila_0/probe38]
 connect_debug_port u_ila_0/probe38 [get_nets [list GeMIPS_1/ex_1/we_o]]
-create_debug_port u_ila_0 probe
-set_property PROBE_TYPE DATA_AND_TRIGGER [get_debug_ports u_ila_0/probe39]
-set_property port_width 1 [get_debug_ports u_ila_0/probe39]
 connect_debug_port u_ila_0/probe39 [get_nets [list GeMIPS_1/mem_1/we_o]]
-set_property C_CLK_INPUT_FREQ_HZ 300000000 [get_debug_cores dbg_hub]
-set_property C_ENABLE_CLK_DIVIDER false [get_debug_cores dbg_hub]
-set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
 connect_debug_port dbg_hub/clk [get_nets clk_10M]
+

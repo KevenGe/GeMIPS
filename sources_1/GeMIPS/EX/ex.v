@@ -25,7 +25,7 @@ module ex (
 
            output  reg [31:0]  wdata_o,
            output  reg [4:0]   waddr_o,
-           (*mark_debug = "true"*)output  reg         we_o,
+           output  reg         we_o,
 
            // 分支指令
            input   wire[31:0]  link_addr_i,

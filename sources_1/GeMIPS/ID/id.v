@@ -14,8 +14,8 @@ module id (
            input    wire        rst,            ///< 重置
            input    wire        clk,            ///< 时钟信号
 
-           (*mark_debug = "true"*)input    wire[31:0]  pc,             ///< 指令的地址
-           (*mark_debug = "true"*)input    wire[31:0]  inst,           ///< 指令编码
+           input    wire[31:0]  pc,             ///< 指令的地址
+           input    wire[31:0]  inst,           ///< 指令编码
 
            output   reg [4:0]   raddr_1,        ///< 读寄存器的地址
            output   reg         re_1,           ///< 读寄存器的使能
@@ -31,8 +31,8 @@ module id (
            output   reg [31:0]  reg_1,          ///< 源操作数1
            output   reg [31:0]  reg_2,          ///< 源操作数2
 
-           (*mark_debug = "true"*)output   reg [4:0]   waddr,          ///< �?要写入的寄存器的地址
-           (*mark_debug = "true"*)output   reg         we,             ///< �?要吸入的使能
+           output   reg [4:0]   waddr,          ///< �?要写入的寄存器的地址
+           output   reg         we,             ///< �?要吸入的使能
 
            /// 数据前推
            input    wire        ex_we_i,        ///< 执行�? 写使�?
@@ -52,12 +52,12 @@ module id (
            output  wire[31:0]   inst_o,           ///< 用于传�?�指令给ex级计算地�?
 
            /// 暂停信号
-           (*mark_debug = "true"*)output   reg         is_stop
+           output   reg         is_stop
        );
 
 assign inst_o = inst;
 
-(*mark_debug = "true"*)wire[5:0] opcode       = inst[31:26];
+wire[5:0] opcode       = inst[31:26];
 wire[4:0] rs           = inst[25:21];
 wire[4:0] rt           = inst[20:16];
 wire[15:0] immediate   = inst[15:0];

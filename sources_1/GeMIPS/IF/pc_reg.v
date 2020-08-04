@@ -19,7 +19,7 @@ module pc_reg (
            input     wire       branch_flag_i,
            input    wire[31:0]  branch_address_i,
 
-           (*mark_debug = "true"*)input    wire        stops_stop      ///< 暂停信号
+           input    wire        stops_stop      ///< 暂停信号
        );
 
 

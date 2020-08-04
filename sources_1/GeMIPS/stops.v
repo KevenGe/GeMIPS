@@ -14,10 +14,10 @@ module STOPS (
            input    wire    clk,            ///< 时钟信号
            input    wire    rst,
 
-           (*mark_debug = "true"*)input    wire    id_stop,        ///< 来自ID级别的暂停信号   1代表暂停，0代表不暂停
-           (*mark_debug = "true"*)input    wire    mem_stop_end,   ///< 来自MEM级别的暂停信号  0代表继续保持当前的状态，1代表停止暂停（继续流水线）
+           input    wire    id_stop,        ///< 来自ID级别的暂停信号   1代表暂停，0代表不暂停
+           input    wire    mem_stop_end,   ///< 来自MEM级别的暂停信号  0代表继续保持当前的状态，1代表停止暂停（继续流水线）
 
-           (*mark_debug = "true"*)output   reg     if_stop         ///< 传递给IF级别的暂停信号 1代表暂停，0代表不暂停
+           output   reg     if_stop         ///< 传递给IF级别的暂停信号 1代表暂停，0代表不暂停
 
        );
 
