@@ -16,6 +16,7 @@
 `define SerialDate 32'hBFD003F8
 
 module RAM (
+           input wire rst,
            input wire clk_50M,           //50MHz 时钟输入
 
            /// 取指令
@@ -131,7 +132,10 @@ assign ext_ram_data = (ram2_we_i) ? 32'hzzzzzzzz : ram2_data_i;
 assign ram2_data_o_tmp = ext_ram_data;
 
 always @(*) begin
-    if(ram2_addr_i == `SerialDate) begin
+    if(rst) begin
+        ext_uart_tx <= 8'b0000_0000;
+    end
+    else if(ram2_addr_i == `SerialDate) begin
         /// 获取（或发送）串口数据
         if(ram2_we_i) begin
             /// 读数据，即接收串口数据

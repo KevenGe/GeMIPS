@@ -230,6 +230,7 @@ GeMIPS GeMIPS_1(
        );
 
 RAM RAM_1(
+        .rst            (reset_btn),
         .clk_50M            (clk_50M),           //50MHz 时钟输入
 
         .rom_addr_i         (rom_addr_o),
