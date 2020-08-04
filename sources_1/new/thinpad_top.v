@@ -215,7 +215,7 @@ wire         ram2_ce_o;
 
 GeMIPS GeMIPS_1(
            .rst            (reset_btn),
-           .clk            (clk_10M),
+           .clk            (clk_50M),
 
            .rom_addr_o     (rom_addr_o),
            .ce_o           (ce_o),
@@ -230,7 +230,7 @@ GeMIPS GeMIPS_1(
        );
 
 RAM RAM_1(
-        .clk_50M            (clk_10M),           //50MHz 时钟输入
+        .clk_50M            (clk_50M),           //50MHz 时钟输入
 
         .rom_addr_i         (rom_addr_o),
         .ce_i               (ce_o),

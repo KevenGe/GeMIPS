@@ -25,9 +25,9 @@ module RAM (
 
            /// 为了方便，命名存储数据的线，前缀为ram2
            output   reg[31:0]   ram2_data_o,
-           input    wire[31:0]  ram2_addr_i,
-           input    wire[31:0]  ram2_data_i,
-           input    wire        ram2_we_i,              ///< 写使能，低有效
+           (*mark_debug = "true"*)input    wire[31:0]  ram2_addr_i,
+           (*mark_debug = "true"*)input    wire[31:0]  ram2_data_i,
+           (*mark_debug = "true"*)input    wire        ram2_we_i,              ///< 写使能，低有效
            input    wire[3:0]   ram2_sel_i,
            input    wire        ram2_ce_i,
 
@@ -56,12 +56,12 @@ module RAM (
  串口通信模块
 *****************************************************************************/
 
-wire [7:0]  ext_uart_rx;             ///< 接收到的数据线路
-reg  [7:0]  ext_uart_buffer,         ///< 保存数据的位置
+(*mark_debug = "true"*)wire [7:0]  ext_uart_rx;             ///< 接收到的数据线路
+(*mark_debug = "true"*)reg  [7:0]  ext_uart_buffer,         ///< 保存数据的位置
      ext_uart_tx;                    ///< 发送数据的线路
-wire        ext_uart_ready,          ///< 接收器收到数据完成之后，置为1
+(*mark_debug = "true"*)wire        ext_uart_ready,          ///< 接收器收到数据完成之后，置为1
             ext_uart_busy;           ///< 发送器状态是否忙碌，1为忙碌，0为不忙碌
-reg         ext_uart_start,          ///< 传递给发送器，为1时，代表可以发送，为0时，代表不发送
+(*mark_debug = "true"*)reg         ext_uart_start,          ///< 传递给发送器，为1时，代表可以发送，为0时，代表不发送
             ext_uart_clear,          ///< 置1，在下次时钟有效的时候，会清楚接收器的标志位
             ext_uart_avai;           ///< 代表缓冲区是否可用，是否存有数据
 
@@ -83,21 +83,21 @@ async_receiver #(.ClkFrequency(50000000),.Baud(9600)) //接收模块，9600无�
 
 // assign ext_uart_clear = ext_uart_ready;                 //收到数据的同时，清除标志，因为数据已取到ext_uart_buffer中
 
-always @(posedge clk_50M) begin                         //接收到缓冲区ext_uart_buffer
-    if(ext_uart_ready) begin
-        ext_uart_buffer_recive <= ext_uart_rx;
-    end
-end
+// always @(posedge clk_50M) begin                         //接收到缓冲区ext_uart_buffer
+//     if(ext_uart_ready) begin
+//         ext_uart_buffer_recive <= ext_uart_rx;
+//     end
+// end
 
-always @(posedge clk_50M) begin                         //将缓冲区ext_uart_buffer发送出去
-    if(!ext_uart_busy && ext_uart_buffer_send_ok) begin
-        ext_uart_tx <= ext_uart_buffer_send;
-        ext_uart_start <= 1;
-    end
-    else begin
-        ext_uart_start <= 0;
-    end
-end
+// always @(posedge clk_50M) begin                         //将缓冲区ext_uart_buffer发送出去
+//     if(!ext_uart_busy && ext_uart_buffer_send_ok) begin
+//         ext_uart_tx <= ext_uart_buffer_send;
+//         ext_uart_start <= 1;
+//     end
+//     else begin
+//         ext_uart_start <= 0;
+//     end
+// end
 
 async_transmitter #(.ClkFrequency(50000000),.Baud(9600)) //发送模块，9600无检验位
                   ext_uart_t(
@@ -132,24 +132,26 @@ assign ram2_data_o_tmp = ext_ram_data;
 
 always @(*) begin
     if(ram2_addr_i == `SerialDate) begin
+        /// 获取（或发送）串口数据
         if(ram2_we_i) begin
             /// 读数据，即接收串口数据
-            ram2_data_o <= {24'h000000, ext_uart_buffer_recive};
+            ram2_data_o <= {24'h000000, ext_uart_rx};
             ext_uart_clear <= 1'b1;
-            ext_uart_buffer_send_ok <= 1'b0;
+            ext_uart_start <= 1'b0;
         end
         else begin
             /// 写数据，即发送串口数据
-            ext_uart_buffer_send <= ram2_data_i[7:0];
-            ext_uart_buffer_send_ok <= 1'b1;
+            ext_uart_tx <= ram2_data_i[7:0];
+            ext_uart_start <= 1'b1;
             ext_uart_clear <= 1'b0;
         end
     end
     else if (ram2_addr_i ==  `SerialStat) begin
         /// 获取串口状态
         ram2_data_o <= {{30{1'b0}}, {ext_uart_ready, !ext_uart_busy}};
+
         ext_uart_clear <= 1'b0;
-        ext_uart_buffer_send_ok <= 1'b0;
+        ext_uart_start <= 1'b0;
     end
     else begin
         ext_ram_addr <= ram2_addr_i[21:2];
@@ -161,7 +163,7 @@ always @(*) begin
         ram2_data_o <= ram2_data_o_tmp;
 
         ext_uart_clear <= 1'b0;
-        ext_uart_buffer_send_ok <= 1'b0;
+        ext_uart_start <= 1'b0;
     end
 end
 

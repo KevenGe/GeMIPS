@@ -70,6 +70,9 @@ wire[15:0] offset      = inst[15:0];
 wire[31:0] immu = {16'b0000_0000_0000_0000, immediate};   ///< 无符号扩�?
 wire[31:0] imms = {{16{immediate[15]}}, immediate};        ///< 有符号扩�?
 
+wire[31:0] next_pc;     ///< 延迟槽地址
+assign next_pc = pc + 4'h4;
+
 /// 用来确定是符号扩展还是无符号扩展
 /// 1'b0    无符号扩展
 /// 1'b1    有符号扩展
@@ -143,12 +146,12 @@ always @(*) begin
             end
             `J_J_OP: begin
                 branch_flag_o <= 1'b1;
-                target_address_o <= {pc[31:28], {instr_index, 2'b00}};
+                target_address_o <= {next_pc[31:28], {instr_index, 2'b00}};
                 link_addr_o <= 32'h0000_0000;
             end
             `J_JAL_OP: begin
                 branch_flag_o <= 1'b1;
-                target_address_o <= {pc[31:28], {instr_index, 2'b00}};
+                target_address_o <= {next_pc[31:28], {instr_index, 2'b00}};
                 link_addr_o <= pc + 8;
             end
             default : begin
