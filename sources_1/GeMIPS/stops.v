@@ -21,19 +21,58 @@ module STOPS (
 
        );
 
-always @(*) begin
-    if(mem_stop_end) begin
+reg[3:0] len;       ///< 每次暂停生效，将持续4个时钟周期
+
+always @(negedge clk) begin
+    if(rst) begin
         if_stop <= 1'b0;
+        len <= 4'b0000;
     end
     else begin
-        // if(id_stop) begin
-        //     if_stop <= 1'b1;
-        // end
-        // else begin
-        //     if_stop <= 1'b0;
-        // end
-        if_stop <= id_stop;
+        if(id_stop) begin
+            len <= 4'b0001;
+            if_stop <= 1'b1;
+        end
+        else begin
+            case (len)
+                4'b0001: begin
+                    len <= 4'b0010;
+                    if_stop <= 1'b1;
+                end
+                4'b0010: begin
+                    len <= 4'b0100;
+                    if_stop <= 1'b1;
+                end
+                4'b0100: begin
+                    len <= 4'b1000;
+                    if_stop <= 1'b1;
+                end
+                4'b1000: begin
+                    len <= 4'b0000;
+                    if_stop <= 1'b0;
+                end
+                default: begin
+                    len <= 4'b0000;
+                    if_stop <= 1'b0;
+                end
+            endcase
+        end
     end
 end
+
+// always @(posedge id_stop or negedge mem_stop_end) begin
+//     if(mem_stop_end) begin
+//         if_stop <= 1'b0;
+//     end
+//     else begin
+//         if(id_stop) begin
+//             if_stop <= 1'b1;
+//         end
+//         else begin
+//             if_stop <= 1'b0;
+//         end
+//         // if_stop <= id_stop;
+//     end
+// end
 
 endmodule

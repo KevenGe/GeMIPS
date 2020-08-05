@@ -3,46 +3,46 @@ module tb;
 
 wire clk_50M, clk_11M0592;
 
-reg clock_btn = 0;         //BTN5手动时钟按钮�?关，带消抖电路，按下时为1
-reg reset_btn = 0;         //BTN6手动复位按钮�?关，带消抖电路，按下时为1
+reg clock_btn = 0;         //BTN5手动时钟按钮�?关，带消抖电路，按下时为1
+reg reset_btn = 0;         //BTN6手动复位按钮�?关，带消抖电路，按下时为1
 
 reg[3:0]  touch_btn;  //BTN1~BTN4，按钮开关，按下时为1
-reg[31:0] dip_sw;     //32位拨码开关，拨到“ON”时�?1
+reg[31:0] dip_sw;     //32位拨码开关，拨到“ON”时�?1
 
 wire[15:0] leds;       //16位LED，输出时1点亮
 wire[7:0]  dpy0;       //数码管低位信号，包括小数点，输出1点亮
 wire[7:0]  dpy1;       //数码管高位信号，包括小数点，输出1点亮
 
-wire txd;  //直连串口发�?�端
-wire rxd;  //直连串口接收�?
+wire txd;  //直连串口发�?�端
+wire rxd;  //直连串口接收�?
 
-wire[31:0] base_ram_data; //BaseRAM数据，低8位与CPLD串口控制器共�?
+wire[31:0] base_ram_data; //BaseRAM数据，低8位与CPLD串口控制器共�?
 wire[19:0] base_ram_addr; //BaseRAM地址
-wire[3:0] base_ram_be_n;  //BaseRAM字节使能，低有效。如果不使用字节使能，请保持�?0
-wire base_ram_ce_n;       //BaseRAM片�?�，低有�?
-wire base_ram_oe_n;       //BaseRAM读使能，低有�?
-wire base_ram_we_n;       //BaseRAM写使能，低有�?
+wire[3:0] base_ram_be_n;  //BaseRAM字节使能，低有效。如果不使用字节使能，请保持�?0
+wire base_ram_ce_n;       //BaseRAM片�?�，低有�?
+wire base_ram_oe_n;       //BaseRAM读使能，低有�?
+wire base_ram_we_n;       //BaseRAM写使能，低有�?
 
 wire[31:0] ext_ram_data; //ExtRAM数据
 wire[19:0] ext_ram_addr; //ExtRAM地址
-wire[3:0] ext_ram_be_n;  //ExtRAM字节使能，低有效。如果不使用字节使能，请保持�?0
-wire ext_ram_ce_n;       //ExtRAM片�?�，低有�?
-wire ext_ram_oe_n;       //ExtRAM读使能，低有�?
-wire ext_ram_we_n;       //ExtRAM写使能，低有�?
+wire[3:0] ext_ram_be_n;  //ExtRAM字节使能，低有效。如果不使用字节使能，请保持�?0
+wire ext_ram_ce_n;       //ExtRAM片�?�，低有�?
+wire ext_ram_oe_n;       //ExtRAM读使能，低有�?
+wire ext_ram_we_n;       //ExtRAM写使能，低有�?
 
-wire [22:0]flash_a;      //Flash地址，a0仅在8bit模式有效�?16bit模式无意�?
+wire [22:0]flash_a;      //Flash地址，a0仅在8bit模式有效�?16bit模式无意�?
 wire [15:0]flash_d;      //Flash数据
 wire flash_rp_n;         //Flash复位信号，低有效
-wire flash_vpen;         //Flash写保护信号，低电平时不能擦除、烧�?
-wire flash_ce_n;         //Flash片�?�信号，低有�?
-wire flash_oe_n;         //Flash读使能信号，低有�?
-wire flash_we_n;         //Flash写使能信号，低有�?
-wire flash_byte_n;       //Flash 8bit模式选择，低有效。在使用flash�?16位模式时请设�?1
+wire flash_vpen;         //Flash写保护信号，低电平时不能擦除、烧�?
+wire flash_ce_n;         //Flash片�?�信号，低有�?
+wire flash_oe_n;         //Flash读使能信号，低有�?
+wire flash_we_n;         //Flash写使能信号，低有�?
+wire flash_byte_n;       //Flash 8bit模式选择，低有效。在使用flash�?16位模式时请设�?1
 
-//Windows�?要注意路径分隔符的转义，例如"D:\\foo\\bar.bin"
-parameter BASE_RAM_INIT_FILE = "./kernel.bin"; //BaseRAM初始化文件，请修改为实际的绝对路�?
-parameter EXT_RAM_INIT_FILE = "/tmp/eram.bin";    //ExtRAM初始化文件，请修改为实际的绝对路�?
-parameter FLASH_INIT_FILE = "/tmp/kernel.elf";    //Flash初始化文件，请修改为实际的绝对路�?
+//Windows�?要注意路径分隔符的转义，例如"D:\\foo\\bar.bin"
+parameter BASE_RAM_INIT_FILE = "./kernel.bin"; //BaseRAM初始化文件，请修改为实际的绝对路�?
+parameter EXT_RAM_INIT_FILE = "/tmp/eram.bin";    //ExtRAM初始化文件，请修改为实际的绝对路�?
+parameter FLASH_INIT_FILE = "/tmp/kernel.elf";    //Flash初始化文件，请修改为实际的绝对路�?
 
 assign rxd = 1'b0; //idle state
 // initial begin
@@ -59,6 +59,8 @@ initial begin
     reset_btn = 1;
     #100;
     reset_btn = 0;
+    #1000000 reset_btn = 1;
+    #1000000 reset_btn = 0;
     for (integer i = 0; i < 20; i = i+1) begin
         #100; //等待100ns
         clock_btn = 1; //按下手工时钟按钮
@@ -67,7 +69,7 @@ initial begin
     end
 end
 
-// 待测试用户设�?
+// 待测试用户设�?
 thinpad_top dut(
     .clk_50M(clk_50M),
     .clk_11M0592(clk_11M0592),
@@ -101,7 +103,7 @@ thinpad_top dut(
     .flash_byte_n(flash_byte_n),
     .flash_we_n(flash_we_n)
 );
-// 时钟�?
+// 时钟�?
 clock osc(
     .clk_11M0592(clk_11M0592),
     .clk_50M    (clk_50M)
@@ -164,7 +166,7 @@ initial begin
     $stop;
 end
 
-// 从文件加�? BaseRAM
+// 从文件加�? BaseRAM
 initial begin 
     reg [31:0] tmp_array[0:1048575];
     integer n_File_ID, n_Init_Size;
@@ -186,7 +188,7 @@ initial begin
     end
 end
 
-// 从文件加�? ExtRAM
+// 从文件加�? ExtRAM
 initial begin 
     reg [31:0] tmp_array[0:1048575];
     integer n_File_ID, n_Init_Size;

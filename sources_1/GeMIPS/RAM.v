@@ -38,8 +38,8 @@ module RAM (
 
            //BaseRAM信号
            inout    wire[31:0]  base_ram_data,          //BaseRAM数据，低8位与CPLD串口控制器共享
-           output   reg [19:0]  base_ram_addr,          //BaseRAM地址
-           output   reg [3:0]   base_ram_be_n,          //BaseRAM字节使能，低有效。如果不使用字节使能，请保持为0
+           (*mark_debug = "true"*)output   reg [19:0]  base_ram_addr,          //BaseRAM地址
+           (*mark_debug = "true"*)output   reg [3:0]   base_ram_be_n,          //BaseRAM字节使能，低有效。如果不使用字节使能，请保持为0
            output   reg         base_ram_ce_n,          //BaseRAM片选，低有效
            output   reg         base_ram_oe_n,          //BaseRAM读使能，低有效
            output   reg         base_ram_we_n,          //BaseRAM写使能，低有效
@@ -238,7 +238,27 @@ always @(*) begin
             ram2_data_o <= serial_o;
         end
         else if (is_base_ram) begin
-            ram2_data_o <= base_ram_o;
+            // ram2_data_o <= base_ram_o;
+            case (ram2_sel_i)
+                4'b1110: begin
+                    ram2_data_o <= base_ram_o[7:0];
+                end
+                4'b1101: begin
+                    ram2_data_o <= base_ram_o[15:8];
+                end
+                4'b1011: begin
+                    ram2_data_o <= base_ram_o[23:16];
+                end
+                4'b0111: begin
+                    ram2_data_o <= base_ram_o[31:24];
+                end
+                4'b0000: begin
+                    ram2_data_o <= base_ram_o;
+                end
+                default: begin
+                    ram2_data_o <= base_ram_o;
+                end
+            endcase
         end
         else if (is_ext_ram) begin
             ram2_data_o <= ext_ram_o;
@@ -248,81 +268,5 @@ always @(*) begin
         end
     end
 end
-
-
-///< 管理获取指令
-// assign base_ram_data = 32'hzzzzzzzz;
-// assign rom_data_o = base_ram_data;
-
-// always @(*) begin
-
-//     if(rst) begin
-
-//     end
-//     else begin
-//         if(isData) begin
-
-//         end
-//         else begin
-//             base_ram_addr <= rom_addr_i[21:2];
-//             base_ram_be_n <= 4'b0000;
-//             base_ram_ce_n <= 1'b0;
-//             base_ram_oe_n <= 1'b0;
-//             base_ram_we_n <= 1'b1;
-//         end
-//     end
-// end
-
-
-// /// ExtRam 管理指令或者数据的存取
-// wire [31:0] ram2_data_o_tmp;
-// assign ext_ram_data = (ram2_we_i) ? 32'hzzzzzzzz : ram2_data_i;
-// assign ram2_data_o_tmp = ext_ram_data;
-
-// always @(*) begin
-//     if(rst) begin
-//         ext_uart_tx <= 8'b0000_0000;
-//     end
-//     else begin
-//         if(ram2_addr_i == `SerialDate) begin                /// 获取（或发送）串口数据
-//             if(ram2_we_i) begin                             /// 读数据，即接收串口数据
-//                 ram2_data_o <= {24'h000000, ext_uart_rx};
-//                 ext_uart_clear <= 1'b1;
-//                 ext_uart_start <= 1'b0;
-//             end
-//             else begin                                      /// 写数据，即发送串口数据
-//                 ext_uart_tx <= ram2_data_i[7:0];
-//                 ext_uart_start <= 1'b1;
-//                 ext_uart_clear <= 1'b0;
-//             end
-//         end
-//         else if (ram2_addr_i ==  `SerialStat) begin         /// 获取串口状态
-//             ram2_data_o <= {{30{1'b0}}, {ext_uart_ready, !ext_uart_busy}};
-
-//             ext_uart_clear <= 1'b0;
-//             ext_uart_start <= 1'b0;
-//         end
-//         else if (ram2_addr_i < 31'h80400000) begin          /// 访问的内存在BaseRam中
-//             base_ram_addr <= ram2_addr_i[21:2];
-//             base_ram_be_n <= ram2_sel_i;
-//             base_ram_ce_n <= 1'b0;
-//             base_ram_oe_n <= !ram2_we_i;
-//             base_ram_we_n <= ram2_we_i;
-
-//         end
-//         else begin                                          /// 访问的数据内存在ExtRam中
-//             ext_ram_addr <= ram2_addr_i[21:2];
-//             ext_ram_be_n <= ram2_sel_i;
-//             ext_ram_ce_n <= 1'b0;
-//             ext_ram_oe_n <= !ram2_we_i;
-//             ext_ram_we_n <= ram2_we_i;
-
-//             ram2_data_o <= ram2_data_o_tmp;
-
-//             ext_uart_clear <= 1'b0;
-//             ext_uart_start <= 1'b0;
-//         end
-//     end
-// end
 
 endmodule

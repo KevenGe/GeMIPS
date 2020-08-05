@@ -47,7 +47,6 @@ always@(*) begin
         mem_addr_o <= 32'b00000000;
         mem_data_o <= 32'b00000000;
         mem_we_o <= 1'b0;
-        mem_sel_o <= 4'b0000;
         mem_ce_o <= 1'b0;
     end
     else begin
@@ -58,7 +57,6 @@ always@(*) begin
                 mem_addr_o <= mem_addr_i;
                 mem_data_o <= 32'b00000000;
                 mem_we_o <= 1'b1;
-                mem_sel_o <= 4'b1110;
                 mem_ce_o <= 1'b1;
                 wdata_o <= ram_data_i;
             end
@@ -66,7 +64,6 @@ always@(*) begin
                 mem_addr_o <= mem_addr_i;
                 mem_data_o <= 32'b00000000;
                 mem_we_o <= 1'b1;
-                mem_sel_o <= 4'b0000;
                 mem_ce_o <= 1'b1;
                 wdata_o <= ram_data_i;
             end
@@ -74,7 +71,6 @@ always@(*) begin
                 mem_addr_o <= mem_addr_i;
                 mem_data_o <= mem_data_i;
                 mem_we_o <= 1'b0;
-                mem_sel_o <= 4'b1110;
                 mem_ce_o <= 1'b1;
                 wdata_o <= 32'b00000000;
             end
@@ -82,7 +78,6 @@ always@(*) begin
                 mem_addr_o <= mem_addr_i;
                 mem_data_o <= mem_data_i;
                 mem_we_o <= 1'b0;
-                mem_sel_o <=  4'b0000;
                 mem_ce_o <= 1'b1;
                 wdata_o <= 32'b00000000;
             end
@@ -91,8 +86,45 @@ always@(*) begin
                 mem_addr_o <= 32'b00000000;
                 mem_data_o <= 32'b00000000;
                 mem_we_o <= 1'b0;
-                mem_sel_o <= 4'b0000;
                 mem_ce_o <= 1'b0;
+            end
+        endcase
+    end
+end
+
+always @(*)  begin
+    if(rst) begin
+        mem_sel_o <= 4'b0000;
+    end
+    else begin
+        case (mem_op)
+            `MEM_LB,
+            `MEM_SB:  begin
+                mem_sel_o <= 4'b1110;
+                case (mem_addr_i[1:0])
+                    2'b00: begin
+                        mem_sel_o <= 4'b1110;
+                    end
+                    2'b01: begin
+                        mem_sel_o <= 4'b1101;
+                    end
+                    2'b10: begin
+                        mem_sel_o <= 4'b1011;
+                    end
+                    2'b11: begin
+                        mem_sel_o <= 4'b0111;
+                    end
+                    default: begin
+                        mem_sel_o <= 4'b1111;
+                    end
+                endcase
+            end
+            `MEM_LW,
+            `MEM_SW:  begin
+                mem_sel_o <=  4'b0000;
+            end
+            default: begin
+                mem_sel_o <= 4'b1111;
             end
         endcase
     end
