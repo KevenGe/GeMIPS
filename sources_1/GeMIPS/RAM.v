@@ -60,10 +60,10 @@ module RAM (
 (*mark_debug = "true"*)wire [7:0]  ext_uart_rx;             ///< 接收到的数据线路
 (*mark_debug = "true"*)reg  [7:0]  ext_uart_tx;                    ///< 发送数据的线路
 (*mark_debug = "true"*)wire        ext_uart_ready,          ///< 接收器收到数据完成之后，置为1
-            ext_uart_busy;           ///< 发送器状态是否忙碌，1为忙碌，0为不忙碌
+ext_uart_busy;           ///< 发送器状态是否忙碌，1为忙碌，0为不忙碌
 (*mark_debug = "true"*)reg         ext_uart_start,          ///< 传递给发送器，为1时，代表可以发送，为0时，代表不发送
-            ext_uart_clear,          ///< 置1，在下次时钟有效的时候，会清楚接收器的标志位
-            ext_uart_avai;           ///< 代表缓冲区是否可用，是否存有数据
+ext_uart_clear,          ///< 置1，在下次时钟有效的时候，会清楚接收器的标志位
+    ext_uart_avai;           ///< 代表缓冲区是否可用，是否存有数据
 
 reg  [7:0]  ext_uart_buffer_recive,     ///< 接受数据缓冲区
      ext_uart_buffer_send;              ///< 发送数据缓冲区
@@ -127,36 +127,66 @@ wire[31:0] ext_ram_o;
 always @(*) begin
     if(rst) begin
         ext_uart_start <= 1'b0;
-        ext_uart_clear <= 1'b1;
         serial_o <= 32'h0000_0000;
         ext_uart_tx <= 8'h00;
     end
     else begin
         if(is_SerialStat) begin                                     /// 获取串口状态
             serial_o <= {{30{1'b0}}, {ext_uart_ready, !ext_uart_busy}};
-            ext_uart_clear <= 1'b0;
             ext_uart_start <= 1'b0;
             ext_uart_tx <= 8'h00;
         end
         else if(ram2_addr_i == `SerialDate) begin                   /// 获取（或发送）串口数据
             if(ram2_we_i) begin                                     /// 读数据，即接收串口数据
                 serial_o <= {24'h000000, ext_uart_rx};
-                ext_uart_clear <= 1'b1;
                 ext_uart_start <= 1'b0;
                 ext_uart_tx <= 8'h00;
             end
             else begin                                              /// 写数据，即发送串口数据
                 ext_uart_tx <= ram2_data_i[7:0];
                 ext_uart_start <= 1'b1;
-                ext_uart_clear <= 1'b0;
                 serial_o <= 32'h0000_0000;
             end
         end
         else begin
             ext_uart_start <= 1'b0;
-            ext_uart_clear <= 1'b1;
             serial_o <= 32'h0000_0000;
             ext_uart_tx <= 8'h00;
+        end
+    end
+end
+
+/// 处理串口接收的clear
+reg     ext_uart_clear_next;
+reg[3:0] ext_uart_clear_para;
+
+always @(*) begin
+    if(rst) begin
+        ext_uart_clear_next <= 1'b0;
+    end
+    else begin
+        if(ext_uart_ready && ram2_addr_i == `SerialDate && ram2_we_i && ext_uart_clear_next == 1'b0) begin
+            ext_uart_clear_next <= 1'b1;
+        end
+        else if (ext_uart_clear == 1'b1) begin
+            ext_uart_clear_next <= 1'b0;
+        end
+        else begin
+            ext_uart_clear_next <= ext_uart_clear_next;
+        end
+    end
+end
+
+always @(posedge clk_50M) begin
+    if(rst) begin
+        ext_uart_clear <= 1'b0;
+    end
+    else begin
+        if(ext_uart_clear_next) begin
+            ext_uart_clear <= 1'b1;
+        end
+        else begin
+            ext_uart_clear <= 1'b0;
         end
     end
 end

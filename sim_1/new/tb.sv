@@ -67,8 +67,8 @@ initial begin
     reset_btn = 1;
     #100;
     reset_btn = 0;
-    #1000000 reset_btn = 1;
-    #1000000 reset_btn = 0;
+    // #1000000 reset_btn = 1;
+    // #1000000 reset_btn = 0;
     for (integer i = 0; i < 20; i = i+1) begin
         #100; //等待100ns
         clock_btn = 1; //按下手工时钟按钮
