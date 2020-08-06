@@ -25,12 +25,12 @@ module RAM (
            output   reg [31:0] rom_data_o,     ///< 获取到的指令
 
            /// 为了方便，命名存储数据的线，前缀为ram2
-           output   reg[31:0]   ram2_data_o,
-           input    wire[31:0]  ram2_addr_i,
-           input    wire[31:0]  ram2_data_i,
-           input    wire        ram2_we_i,              ///< 写使能，低有效
-           input    wire[3:0]   ram2_sel_i,
-           input    wire        ram2_ce_i,
+           (*mark_debug = "true"*)output   reg[31:0]   ram2_data_o,
+           (*mark_debug = "true"*)input    wire[31:0]  ram2_addr_i,
+           (*mark_debug = "true"*)input    wire[31:0]  ram2_data_i,
+           (*mark_debug = "true"*)input    wire        ram2_we_i,              ///< 写使能，低有效
+           (*mark_debug = "true"*)input    wire[3:0]   ram2_sel_i,
+           (*mark_debug = "true"*)input    wire        ram2_ce_i,
 
            //直连串口信号
            output    wire       txd,  //直连串口发送端
@@ -57,12 +57,11 @@ module RAM (
  串口通信模块
 *****************************************************************************/
 
-wire [7:0]  ext_uart_rx;             ///< 接收到的数据线路
-reg  [7:0]  ext_uart_buffer,         ///< 保存数据的位置
-     ext_uart_tx;                    ///< 发送数据的线路
-wire        ext_uart_ready,          ///< 接收器收到数据完成之后，置为1
+(*mark_debug = "true"*)wire [7:0]  ext_uart_rx;             ///< 接收到的数据线路
+(*mark_debug = "true"*)reg  [7:0]  ext_uart_tx;                    ///< 发送数据的线路
+(*mark_debug = "true"*)wire        ext_uart_ready,          ///< 接收器收到数据完成之后，置为1
             ext_uart_busy;           ///< 发送器状态是否忙碌，1为忙碌，0为不忙碌
-reg         ext_uart_start,          ///< 传递给发送器，为1时，代表可以发送，为0时，代表不发送
+(*mark_debug = "true"*)reg         ext_uart_start,          ///< 传递给发送器，为1时，代表可以发送，为0时，代表不发送
             ext_uart_clear,          ///< 置1，在下次时钟有效的时候，会清楚接收器的标志位
             ext_uart_avai;           ///< 代表缓冲区是否可用，是否存有数据
 
@@ -71,7 +70,7 @@ reg  [7:0]  ext_uart_buffer_recive,     ///< 接受数据缓冲区
 
 reg         ext_uart_buffer_send_ok;    ///< 发送数据缓冲区已经可以发送，1为可以，0为不可以
 
-assign number = ext_uart_buffer;
+// assign number = ext_uart_buffer;
 
 async_receiver #(.ClkFrequency(50000000),.Baud(9600)) //接收模块，9600无检验位
                ext_uart_r(
@@ -120,7 +119,7 @@ wire is_SerialDate = (ram2_addr_i == `SerialDate);
 wire is_base_ram = is_SerialStat != 1'b1 && is_SerialDate != 1'b1 && (ram2_addr_i >= 32'h80000000) &&   (ram2_addr_i < 32'h80400000);
 wire is_ext_ram = is_SerialStat != 1'b1 && is_SerialDate != 1'b1 &&  (ram2_addr_i < 32'h80800000) && (ram2_addr_i >= 32'h80400000);
 
-reg[31:0] serial_o;
+(*mark_debug = "true"*)reg[31:0] serial_o;
 wire[31:0] base_ram_o;
 wire[31:0] ext_ram_o;
 
@@ -234,7 +233,7 @@ always @(*) begin
         ram2_data_o <= 32'h0000_0000;
     end
     else begin
-        if(is_SerialStat ||is_SerialDate ) begin
+        if(is_SerialStat || is_SerialDate ) begin
             ram2_data_o <= serial_o;
         end
         else if (is_base_ram) begin

@@ -12,9 +12,9 @@ module regfile (
            input    wire        rst,    ///< 重置
            input    wire        clk,    ///< 时钟信号
 
-           input    wire[4:0]   waddr,  ///< 写地址
-           input    wire[31:0]  wdata,  ///< 写数据
-           input    wire        we,     ///< 写使能
+           (*mark_debug = "true"*)input    wire[4:0]   waddr,  ///< 写地址
+           (*mark_debug = "true"*)input    wire[31:0]  wdata,  ///< 写数据
+           (*mark_debug = "true"*)input    wire        we,     ///< 写使能
 
            input    wire[4:0]   raddr_1,///< 读地址
            input    wire        re_1,   ///< 读使能

@@ -14,7 +14,7 @@ wire[7:0]  dpy0;       //数码管低位信号，包括小数点，输出1点亮
 wire[7:0]  dpy1;       //数码管高位信号，包括小数点，输出1点亮
 
 wire txd;  //直连串口发�?�端
-wire rxd;  //直连串口接收�?
+reg  rxd;  //直连串口接收�?
 
 wire[31:0] base_ram_data; //BaseRAM数据，低8位与CPLD串口控制器共�?
 wire[19:0] base_ram_addr; //BaseRAM地址
@@ -44,12 +44,20 @@ parameter BASE_RAM_INIT_FILE = "./kernel.bin"; //BaseRAM初始化文件，请修
 parameter EXT_RAM_INIT_FILE = "/tmp/eram.bin";    //ExtRAM初始化文件，请修改为实际的绝对路�?
 parameter FLASH_INIT_FILE = "/tmp/kernel.elf";    //Flash初始化文件，请修改为实际的绝对路�?
 
-assign rxd = 1'b0; //idle state
-// initial begin
-//     rxd = 1'b0;
-//     #10 rxd = 1'b1;
-//     #10 rxd = 1'b0;
-// end
+// assign rxd = 1'b1; //idle state
+initial begin
+    rxd = 1'b1;
+    #104000 rxd = 1'b0;
+    #104000 rxd = 1'b0;
+    #104000 rxd = 1'b1;
+    #104000 rxd = 1'b0;
+    #104000 rxd = 1'b0;
+    #104000 rxd = 1'b1;
+    #104000 rxd = 1'b0;
+    #104000 rxd = 1'b1;
+    #104000 rxd = 1'b0;
+    #104000 rxd = 1'b1;
+end
 
 
 initial begin 
