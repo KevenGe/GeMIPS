@@ -31,7 +31,7 @@ always@(posedge clk) begin
     if(rst) begin
         ce <= 1'b0;
         pc <= 32'h8000_0000;
-        next_pc <= 32'h8000_0000 + 4'b0100;
+        next_pc <= 32'h8000_0000;
     end
     else begin
         if (stops_stop) begin
