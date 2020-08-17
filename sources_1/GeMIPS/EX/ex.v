@@ -41,10 +41,12 @@ module ex (
 wire [31:0]     multiplier;                     ///< 乘数
 wire [31:0]     multiplicand;                   ///< 被乘数
 wire [63:0]     mul_tmp;                        ///< 储存临时计算的结果
+wire [31:0]     mul_tmp_32;                     ///< 临时计算结果的低32位
 
 assign multiplier = reg_1[31] ? (~reg_1 +1'b1) : reg_1;
 assign multiplicand = reg_2[31] ? (~reg_2 +1'b1) : reg_2;
 assign mul_tmp = multiplier * multiplicand;
+assign mul_tmp_32 = mul_tmp[31:0];
 
 /**
  *  计算输出的元素
@@ -72,11 +74,11 @@ always@(*) begin
                 wdata_o <= reg_1 + reg_2;
             end
             `ALU_OP_MUL: begin
-                if(reg_1[31] * reg_2[31] == 1'b1) begin
-                    wdata_o <= ~mul_tmp+1;
+                if(reg_1[31] ^ reg_2[31] == 1'b1) begin
+                    wdata_o <= ~mul_tmp_32+1;
                 end
                 else begin
-                    wdata_o <= mul_tmp;
+                    wdata_o <= mul_tmp_32;
                 end
             end
             `ALU_OP_LUI: begin
