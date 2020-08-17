@@ -160,7 +160,7 @@ end
 reg     ext_uart_clear_next;
 reg[3:0] ext_uart_clear_para;
 
-always @(*) begin
+always @(negedge clk_50M) begin
     if(rst) begin
         ext_uart_clear_next <= 1'b0;
     end
