@@ -478,7 +478,7 @@ always @(*) begin
         else if (re_1 == 1'b0) begin
             // reg_1 <= uos ? imms : immu;
             if(use_sa) begin
-                reg_1 <= {{28{1'b0}}, sa};
+                reg_1 <= {{27{1'b0}}, sa};
             end
             else if(uos) begin
                 reg_1 <= imms;
@@ -515,7 +515,7 @@ always @(*) begin
         else if (re_2 == 1'b0) begin
             // reg_2 <= uos ? imms : immu;
             if(use_sa) begin
-                reg_2 <= {{28{1'b0}}, sa};
+                reg_2 <= {{27{1'b0}}, sa};
             end
             else if(uos) begin
                 reg_2 <= imms;              ///< 符号扩展的操作数
