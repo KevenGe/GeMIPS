@@ -138,7 +138,8 @@ always@(*) begin
             `I_SB_OP: begin
                 mem_op <= `MEM_SB;
                 mem_addr_o <= reg_1 + imms;
-                mem_data_o <= {24'h000000, reg_2[7:0]};
+                // mem_data_o <= {24'h000000, reg_2[7:0]};
+                mem_data_o <= reg_2;
             end
             `I_SW_OP: begin
                 mem_op <= `MEM_SW;

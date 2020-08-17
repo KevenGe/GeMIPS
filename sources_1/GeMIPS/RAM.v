@@ -37,20 +37,20 @@ module RAM (
            input     wire       rxd,  //直连串口接收端
 
            //BaseRAM信号
-           inout    wire[31:0]  base_ram_data,          //BaseRAM数据，低8位与CPLD串口控制器共享
+           (*mark_debug = "true"*)inout    wire[31:0]  base_ram_data,          //BaseRAM数据，低8位与CPLD串口控制器共享
            (*mark_debug = "true"*)output   reg [19:0]  base_ram_addr,          //BaseRAM地址
            (*mark_debug = "true"*)output   reg [3:0]   base_ram_be_n,          //BaseRAM字节使能，低有效。如果不使用字节使能，请保持为0
-           output   reg         base_ram_ce_n,          //BaseRAM片选，低有效
-           output   reg         base_ram_oe_n,          //BaseRAM读使能，低有效
-           output   reg         base_ram_we_n,          //BaseRAM写使能，低有效
+           (*mark_debug = "true"*)output   reg         base_ram_ce_n,          //BaseRAM片选，低有效
+           (*mark_debug = "true"*)output   reg         base_ram_oe_n,          //BaseRAM读使能，低有效
+           (*mark_debug = "true"*)output   reg         base_ram_we_n,          //BaseRAM写使能，低有效
 
            //ExtRAM信号
-           inout    wire[31:0]  ext_ram_data,           //ExtRAM数据
-           output   reg [19:0]  ext_ram_addr,           //ExtRAM地址
-           output   reg [3:0]   ext_ram_be_n,           //ExtRAM字节使能，低有效。如果不使用字节使能，请保持为0
-           output   reg         ext_ram_ce_n,           //ExtRAM片选，低有效
-           output   reg         ext_ram_oe_n,           //ExtRAM读使能，低有效
-           output   reg         ext_ram_we_n            //ExtRAM写使能，低有效
+           (*mark_debug = "true"*)inout    wire[31:0]  ext_ram_data,           //ExtRAM数据
+           (*mark_debug = "true"*)output   reg [19:0]  ext_ram_addr,           //ExtRAM地址
+           (*mark_debug = "true"*)output   reg [3:0]   ext_ram_be_n,           //ExtRAM字节使能，低有效。如果不使用字节使能，请保持为0
+           (*mark_debug = "true"*)output   reg         ext_ram_ce_n,           //ExtRAM片选，低有效
+           (*mark_debug = "true"*)output   reg         ext_ram_oe_n,           //ExtRAM读使能，低有效
+           (*mark_debug = "true"*)output   reg         ext_ram_we_n            //ExtRAM写使能，低有效
        );
 
 /*****************************************************************************
@@ -270,16 +270,16 @@ always @(*) begin
             // ram2_data_o <= base_ram_o;
             case (ram2_sel_i)
                 4'b1110: begin
-                    ram2_data_o <= base_ram_o[7:0];
+                    ram2_data_o <= {{24{base_ram_o[7]}}, base_ram_o[7:0]};
                 end
                 4'b1101: begin
-                    ram2_data_o <= base_ram_o[15:8];
+                    ram2_data_o <= {{24{base_ram_o[15]}}, base_ram_o[15:8]};
                 end
                 4'b1011: begin
-                    ram2_data_o <= base_ram_o[23:16];
+                    ram2_data_o <= {{24{base_ram_o[23]}}, base_ram_o[23:16]};
                 end
                 4'b0111: begin
-                    ram2_data_o <= base_ram_o[31:24];
+                    ram2_data_o <= {{24{base_ram_o[31]}}, base_ram_o[31:24]};
                 end
                 4'b0000: begin
                     ram2_data_o <= base_ram_o;
@@ -290,7 +290,27 @@ always @(*) begin
             endcase
         end
         else if (is_ext_ram) begin
-            ram2_data_o <= ext_ram_o;
+            // ram2_data_o <= ext_ram_o;
+            case (ram2_sel_i)
+                4'b1110: begin
+                    ram2_data_o <= {{24{ext_ram_o[7]}}, ext_ram_o[7:0]};
+                end
+                4'b1101: begin
+                    ram2_data_o <= {{24{ext_ram_o[15]}}, ext_ram_o[15:8]};
+                end
+                4'b1011: begin
+                    ram2_data_o <= {{24{ext_ram_o[23]}}, ext_ram_o[23:16]};
+                end
+                4'b0111: begin
+                    ram2_data_o <= {{24{ext_ram_o[31]}}, ext_ram_o[31:24]};
+                end
+                4'b0000: begin
+                    ram2_data_o <= ext_ram_o;
+                end
+                default: begin
+                    ram2_data_o <= ext_ram_o;
+                end
+            endcase
         end
         else begin
             ram2_data_o <= 32'h0000_0000;

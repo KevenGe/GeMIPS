@@ -100,7 +100,7 @@ always @(*)  begin
         case (mem_op)
             `MEM_LB,
             `MEM_SB:  begin
-                mem_sel_o <= 4'b1110;
+                // mem_sel_o <= 4'b1110;
                 case (mem_addr_i[1:0])
                     2'b00: begin
                         mem_sel_o <= 4'b1110;
