@@ -33,12 +33,29 @@
 |  21  |  `XOR`  | 000000ssssstttttddddd00000100110 |
 |  22  | `XORI`  | 001110ssssstttttiiiiiiiiiiiiiiii |
 
+本项目在项目中的评测性能主要是性能测试，在功能测试以及性能测试通过的前提下，执行时间越短便具有越高的性能。
+
+性能测试的三个测试可以在`supervisor_v2.01`中的`supervisor_v2.01\kernel\kern\test.s`找到对应的MIPS汇编代码。
+
+<img src="./docs/imgs/性能测试%20STREAM%20结果.jpg" style="width:500px"/>
+
+<img src="./docs/imgs/性能测试%20MATRIX%20结果.jpg" style="width:500px"/>
+
+<img src="./docs/imgs/性能测试%20COPYTONIGHT%20结果.jpg" style="width:500px"/>
+
+决赛任务的测试结果
+
+<img src="./docs/imgs/决赛编程任务%20结果.jpg" style="width:500px"/>
+
+<img src="./docs/imgs/决赛编程任务%20结果（只读低22位）.jpg" style="width:500px"/>
+
 ## 项目特点
 
 -   项目采用五级流水线架构
 -   项目采用单发射机制
 -   完成基本指令
 -   具有比较详细的注释（中间由于一些原因，造成了一些注释乱码，后期未有精力进行修改）
+-   具有良好的公开串口通信代码，并且在本项目测试可用
 
 ## 项目结构
 
