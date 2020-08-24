@@ -1,6 +1,6 @@
 # Ge-MIPS
 
-[toc]
+如果需要完整的项目，可以到打开本项目的[发行版](https://gitee.com/kevenge/GeMIPS/releases/v0.4)。
 
 ## 介绍
 
