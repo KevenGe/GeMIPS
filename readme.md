@@ -1,8 +1,10 @@
 # Ge-MIPS
 
-如果需要完整的项目，可以到打开本项目的[发行版](https://gitee.com/kevenge/GeMIPS/releases/v0.4)。
+- 原始仓库：[https://gitee.com/kevenge/GeMIPS](https://gitee.com/kevenge/GeMIPS)
+- 镜像仓库：[https://github.com/KevenGe/GeMIPS](https://github.com/KevenGe/GeMIPS)
+- Vivado 2019.2 可直接打开的项目：[https://gitee.com/kevenge/GeMIPS/releases/v0.4](https://gitee.com/kevenge/GeMIPS/releases/v0.4)
 
-## 前言
+## News
 
 ### 2024-11-10🥰
 
